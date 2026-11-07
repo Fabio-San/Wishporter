@@ -4,6 +4,19 @@ All notable changes to this project are documented here.
 The format follows [Keep a Changelog](https://keepachangelog.com/) and the
 project adheres to [Semantic Versioning](https://semver.org/).
 
+## [1.0.3] - 2026-11-07
+
+### Changed
+
+- **Robust source parser**: now tries all sheets (not just the active one),
+  auto-detects the header row by scanning the first 30 rows, and maps columns
+  by name (with positional fallback). This fixes imports of HoYo support
+  exports that have a slightly different structure.
+- Detailed error messages: reports which sheets were tried, how many rows were
+  skipped and why, and lists unknown wish types.
+- Added support for `.xls` files with a clear error message (convert to
+  `.xlsx` or `.csv` first).
+
 ## [1.0.2] - 2026-11-07
 
 ### Added

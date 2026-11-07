@@ -765,12 +765,60 @@ def make_record(no_raw, uid, wish_type, item_name, time_value, line_number):
     }
 
 
+_COLUMN_KEYWORDS = {
+    "no": ("no.", "no ", "#", "index", "number", "num", "序号", "번호", "番号", "номер"),
+    "uid": ("uid", "user id", "user_id", "ユーザー", "用户", "player", "player id"),
+    "type": ("type", "wish type", "wish_type", "tipo", "typ", "тип", "类型", "種類", "gacha", "gacha type"),
+    "name": ("award", "name", "item", "oggetto", "nom", "nombre", "название", "名称", "아이템", "prize", "wish award"),
+    "time": ("time", "date", "ora", "temps", "zeit", "hora", "время", "時間", "日時", "datetime", "timestamp", "wish time"),
+}
+
+
+def _detect_header_and_columns(rows):
+    """Detect header row and column mapping from a list of row tuples.
+
+    Scans the first 30 rows for a header row containing recognizable column
+    names.  Returns (header_index, column_map) where column_map maps field
+    names to column indices, or (None, None) if no header is detected.
+    """
+    for idx, row in enumerate(rows[:30]):
+        if not row or all(c is None for c in row):
+            continue
+        first_cell = row[0] if row else None
+        if first_cell is not None and str(first_cell).strip().isdigit():
+            continue
+
+        cells = [str(c).strip().lower() if c is not None else "" for c in row]
+
+        col_map = {}
+        for i, cell in enumerate(cells):
+            for field, keywords in _COLUMN_KEYWORDS.items():
+                if field not in col_map and any(kw in cell for kw in keywords):
+                    col_map[field] = i
+                    break
+
+        if len(col_map) >= 2:
+            defaults = {"no": 0, "uid": 1, "type": 2, "name": 3, "time": 4}
+            for field, default in defaults.items():
+                if field not in col_map and default < len(row):
+                    col_map[field] = default
+            return idx, col_map
+
+    return None, None
+
+
 def parse_source_file(file_path):
-    rows = []
     suffix = Path(file_path).suffix.lower()
 
+    if suffix == ".xls":
+        raise ValueError(
+            "Old Excel format (.xls) is not supported. "
+            "Please convert the file to .xlsx or .csv first."
+        )
     if suffix not in (".xlsx", ".csv"):
         raise ValueError(i18n.t("unsupported_format", ext=suffix or "?"))
+
+    sheets = []
 
     if suffix == ".csv":
         with open(file_path, mode="r", encoding="utf-8-sig", errors="replace", newline="") as handle:
@@ -781,30 +829,110 @@ def parse_source_file(file_path):
             except csv.Error:
                 dialect = csv.excel
             reader = csv.reader(handle, dialect)
-            for line_number, raw in enumerate(reader, start=1):
-                if len(raw) < 5:
-                    continue
-                if not str(raw[0]).strip().isdigit():
-                    continue
-                rows.append(make_record(raw[0], raw[1], raw[2], raw[3], raw[4], line_number))
+            rows = [r for r in reader]
+        sheets.append(("CSV", rows))
     else:
-        workbook = openpyxl.load_workbook(file_path, data_only=True, read_only=True)
         try:
-            sheet = workbook.active
-            for line_number, raw in enumerate(sheet.iter_rows(values_only=True), start=1):
-                if not raw or len(raw) < 5:
-                    continue
-                if raw[0] is None or not str(raw[0]).strip().isdigit():
-                    continue
-                rows.append(make_record(raw[0], raw[1], raw[2], raw[3], raw[4], line_number))
+            workbook = openpyxl.load_workbook(file_path, data_only=True, read_only=True)
+        except Exception as exc:
+            raise ValueError("Could not read the Excel file. Is it a valid .xlsx? (%s)" % exc)
+        try:
+            for name in workbook.sheetnames:
+                sheet_rows = list(workbook[name].iter_rows(values_only=True))
+                sheets.append((name, sheet_rows))
         finally:
             workbook.close()
+
+    all_records = []
+    sheets_tried = []
+    sheets_with_data = []
+    skipped_no_digit = 0
+    skipped_parse_error = 0
+    unknown_types = set()
+
+    for sheet_name, rows in sheets:
+        sheets_tried.append(sheet_name)
+        if not rows:
+            continue
+
+        header_idx, col_map = _detect_header_and_columns(rows)
+
+        if header_idx is not None:
+            data_start = header_idx + 1
+        else:
+            data_start = 0
+            col_map = {"no": 0, "uid": 1, "type": 2, "name": 3, "time": 4}
+
+        sheet_records = []
+        for line_number, raw in enumerate(rows[data_start:], start=data_start + 1):
+            if not raw or all(c is None for c in raw):
+                continue
+
+            row = list(raw)
+            while len(row) < 5:
+                row.append(None)
+
+            no_col = col_map.get("no", 0)
+            if no_col >= len(row) or row[no_col] is None or not str(row[no_col]).strip().isdigit():
+                skipped_no_digit += 1
+                continue
+
+            no_raw = row[no_col]
+            uid_col = col_map.get("uid", 1)
+            type_col = col_map.get("type", 2)
+            name_col = col_map.get("name", 3)
+            time_col = col_map.get("time", 4)
+
+            uid = row[uid_col] if uid_col < len(row) else None
+            wish_type = row[type_col] if type_col < len(row) else None
+            item_name = row[name_col] if name_col < len(row) else None
+            time_value = row[time_col] if time_col < len(row) else None
+
+            try:
+                record = make_record(no_raw, uid, wish_type, item_name, time_value, line_number)
+                sheet_records.append(record)
+            except ValueError as exc:
+                skipped_parse_error += 1
+                msg = str(exc)
+                if "Unrecognized wish type" in msg:
+                    unknown_types.add(str(wish_type))
+                continue
+
+        if sheet_records:
+            sheets_with_data.append((sheet_name, len(sheet_records)))
+            all_records.extend(sheet_records)
+
+    if not all_records:
+        parts = []
+        parts.append("Sheets tried: %s." % ", ".join(sheets_tried))
+        if sheets_with_data:
+            parts.append("Sheets with data: %s." % ", ".join(
+                "%s (%d rows)" % (n, c) for n, c in sheets_with_data))
+        else:
+            parts.append("No sheet contained recognizable pull data.")
+        if skipped_no_digit:
+            parts.append("%d row(s) skipped (first column not numeric)." % skipped_no_digit)
+        if skipped_parse_error:
+            parts.append("%d row(s) skipped (parse errors, e.g. unknown wish type or invalid date)." % skipped_parse_error)
+        if unknown_types:
+            parts.append("Unknown wish types: %s." % ", ".join(sorted(unknown_types)))
+        parts.append("Expected columns: No., UID, Wish type, Wish award, Wish time.")
+        parts.append("Tip: open the file in Excel and verify the data sheet contains columns: No., UID, Wish type, Wish award, Wish time.")
+        raise ValueError(" ".join(parts))
+
+    if skipped_no_digit or skipped_parse_error:
+        if skipped_no_digit:
+            print("[!] %d row(s) skipped (non-numeric first column, likely header or empty rows)." % skipped_no_digit)
+        if skipped_parse_error:
+            print("[!] %d row(s) skipped (parse errors, e.g. unknown wish type or invalid date)." % skipped_parse_error)
+        if unknown_types:
+            print("[!] Unknown wish types: %s." % ", ".join(sorted(unknown_types)))
 
     # The HoYo export is newest-first. Within the same second, the lower
     # "No." is the newer pull, so the chronological order is time ascending,
     # No. descending.
-    rows.sort(key=lambda row: (row["dt"], -row["no"]))
-    return rows
+    all_records.sort(key=lambda row: (row["dt"], -row["no"]))
+    return all_records
 
 
 # ---------------------------------------------------------------------------
