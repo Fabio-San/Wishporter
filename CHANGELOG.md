@@ -4,6 +4,21 @@ All notable changes to this project are documented here.
 The format follows [Keep a Changelog](https://keepachangelog.com/) and the
 project adheres to [Semantic Versioning](https://semver.org/).
 
+## [1.0.1] - 2026-11-07
+
+### Changed
+
+- Refreshed the logo (gold star, teal trail, Primogem diamond, magenta Paimon.moe accent)
+  and added a social preview banner.
+- README: added the HoYoverse support wish-history recovery context and a
+  "translations are open to everyone, for free" guide.
+- CI: run Python 3.9 on `ubuntu-22.04`, bump GitHub Actions to Node 24 versions,
+  silencing the Node 20 deprecation warnings.
+
+### Fixed
+
+- None functional; the converter and tests are unchanged.
+
 ## [1.0.0] - 2026-11-07
 
 ### Added
