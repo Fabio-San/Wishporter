@@ -9,7 +9,7 @@
 <p align="center">
   <a href="https://github.com/Fabio-San/Wishporter/actions/workflows/ci.yml"><img src="https://github.com/Fabio-San/Wishporter/actions/workflows/ci.yml/badge.svg" alt="CI"></a>
   <img src="https://img.shields.io/badge/python-3.9%2B-3776AB?logo=python&logoColor=white" alt="Python 3.9+">
-  <img src="https://img.shields.io/badge/platform-Windows%20%7C%20Linux%20%7C%20macOS-lightgrey" alt="Platforms">
+  <img src="https://img.shields.io/badge/platform-Windows%20%7C%20Linux-lightgrey" alt="Platforms">
   <img src="https://img.shields.io/badge/languages-7-yellow" alt="7 languages">
   <img src="https://img.shields.io/badge/translations-welcome-brightgreen" alt="Translations welcome">
   <img src="https://img.shields.io/badge/license-MIT-green" alt="MIT License">
