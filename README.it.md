@@ -128,6 +128,7 @@ python convert.py history.xlsx -o mia_cronologia_paimonmoe.xlsx
 | `--yes` | Sovrascrive l'output e accetta le domande di setup. |
 | `--check` | Solo controllo dell'ambiente (launcher). |
 | `--debug` | Mostra il traceback completo in caso di errore. |
+| `--debug-rows` | Stampa le prime righe di ogni foglio per la diagnosi. |
 | `--version` | Mostra la versione ed esce. |
 
 Se il file di output esiste già, Wishporter chiede prima di sovrascriverlo; se

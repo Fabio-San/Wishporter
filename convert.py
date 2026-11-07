@@ -777,7 +777,7 @@ def _debug_print_rows(file_path):
             print("  row %d: %r" % (i, row))
         return
     try:
-        workbook = openpyxl.load_workbook(file_path, data_only=True, read_only=True)
+        workbook = openpyxl.load_workbook(file_path, data_only=True, read_only=False)
     except Exception as exc:
         print("[debug] Could not open file: %s" % exc)
         return
@@ -785,7 +785,10 @@ def _debug_print_rows(file_path):
         for name in workbook.sheetnames:
             sheet = workbook[name]
             rows = list(sheet.iter_rows(min_row=1, max_row=8, values_only=True))
-            print("[debug] Sheet '%s' (%d rows total):" % (name, sheet.max_row if hasattr(sheet, "max_row") else "?"))
+            merged = list(sheet.merged_cells.ranges)
+            print("[debug] Sheet '%s' (%d rows, %d merged):" % (name, sheet.max_row, len(merged)))
+            if merged:
+                    print('  merged: %s' % merged[:10])
             for i, row in enumerate(rows, start=1):
                 print("  row %d: %r" % (i, row))
     finally:
@@ -869,13 +872,37 @@ def parse_source_file(file_path):
             rows = [r for r in reader]
         sheets.append(("CSV", rows))
     else:
+        # Use normal mode (not read_only) because read_only mode does not
+        # handle merged cells or sparse rows correctly: it returns only the
+        # cells actually defined in the XML, which can be a single column
+        # even when the sheet visually has five.  Normal mode fills missing
+        # cells with None so every row has a consistent length.
         try:
-            workbook = openpyxl.load_workbook(file_path, data_only=True, read_only=True)
+            workbook = openpyxl.load_workbook(file_path, data_only=True, read_only=False)
         except Exception as exc:
             raise ValueError("Could not read the Excel file. Is it a valid .xlsx? (%s)" % exc)
         try:
             for name in workbook.sheetnames:
-                sheet_rows = list(workbook[name].iter_rows(values_only=True))
+                ws = workbook[name]
+                # Read all rows; normal mode fills merged/empty cells with None.
+                sheet_rows = list(ws.iter_rows(values_only=True))
+                # If the sheet has merged cells, ensure values propagate.
+                if ws.merged_cells.ranges:
+                    for merged in ws.merged_cells.ranges:
+                        top_left = ws.cell(row=merged.min_row, column=merged.min_col).value
+                        for r in range(merged.min_row, merged.max_row + 1):
+                            for c in range(merged.min_col, merged.max_col + 1):
+                                if r >= 1 and c >= 1:
+                                    # Find the row in sheet_rows (0-based)
+                                    row_idx = r - 1
+                                    col_idx = c - 1
+                                    if row_idx < len(sheet_rows):
+                                        row_list = list(sheet_rows[row_idx])
+                                        while len(row_list) <= col_idx:
+                                            row_list.append(None)
+                                        if row_list[col_idx] is None and top_left is not None:
+                                            row_list[col_idx] = top_left
+                                        sheet_rows[row_idx] = tuple(row_list)
                 sheets.append((name, sheet_rows))
         finally:
             workbook.close()
@@ -981,8 +1008,11 @@ def parse_source_file(file_path):
             parts.append("%d row(s) skipped (parse errors, e.g. unknown wish type or invalid date)." % skipped_parse_error)
         if unknown_types:
             parts.append("Unknown wish types: %s." % ", ".join(sorted(unknown_types)))
+        # Check if all rows had only 1 column (possible merged cells or sparse data)
+        if skipped_no_digit > 0 and not sheets_with_data:
+            parts.append("All rows appear to have a single column. This may indicate merged cells or a different file layout. Try: open the file in Excel, select all, copy, paste into a new workbook, and save as .xlsx.")
         parts.append("Expected columns: No., UID, Wish type, Wish award, Wish time.")
-        parts.append("Tip: open the file in Excel and verify the data sheet contains columns: No., UID, Wish type, Wish award, Wish time.")
+        parts.append("Tip: run with --debug-rows to see the raw cell values.")
         raise ValueError(" ".join(parts))
 
     if skipped_no_digit or skipped_parse_error:

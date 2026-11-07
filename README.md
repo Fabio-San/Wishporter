@@ -124,6 +124,7 @@ python convert.py history.xlsx -o my_history_paimonmoe.xlsx
 | `--yes` | Overwrite the output and accept setup questions. |
 | `--check` | Environment check only (launcher). |
 | `--debug` | Show the full error traceback. |
+| `--debug-rows` | Print the first rows of each sheet for diagnosis. |
 | `--version` | Show the version and exit. |
 
 If the output file already exists, Wishporter asks before overwriting; if you

@@ -4,6 +4,20 @@ All notable changes to this project are documented here.
 The format follows [Keep a Changelog](https://keepachangelog.com/) and the
 project adheres to [Semantic Versioning](https://semver.org/).
 
+## [1.0.5] - 2026-11-07
+
+### Fixed
+
+- **Merged cells / sparse rows**: switched from `read_only` to normal mode, which
+  properly fills empty/merged cells with `None` instead of returning short rows.
+  This fixes HoYo support exports where openpyxl's read-only mode returned only
+  the first column of each row.
+- Added merged-cell propagation: if a merged range covers multiple columns, the
+  top-left value is copied to all cells in the range.
+- Error message now detects when all rows have a single column and suggests
+  re-saving the file from Excel.
+- Added `--debug-rows` flag (prints raw cell values and merged ranges).
+
 ## [1.0.4] - 2026-11-07
 
 ### Fixed
