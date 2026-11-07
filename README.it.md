@@ -210,6 +210,7 @@ Paimon.moe esistente.
 | File non trovato | Trascina il file nella finestra o incolla il percorso completo. Su Windows le virgolette vengono gestite automaticamente. |
 | Oggetti sconosciuti | Esegui una volta online per aggiornare il database. Se l'oggetto resta sconosciuto, apri una issue indicando il nome (senza UID). |
 | Nessun banner trovato | Esegui online per aggiornare la cache, oppure passa `--reference` con un export Paimon.moe recente. Controlla `--server` se il tuo UID è particolare. |
+| "Nessuna pull trovata" con file valido | Il file potrebbe usare celle unite (comune negli export del supporto HoYo). v1.0.5+ lo gestisce automaticamente. Se fallisce ancora, esegui con `--debug-rows` e condividi l'output. |
 | L'import sembra ignorato | Paimon.moe è append-only; svuota i dati attuali prima di un import completo. |
 | Cache vecchia | Elimina la cartella `cache/` e riavvia online. |
 

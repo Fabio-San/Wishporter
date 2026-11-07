@@ -203,6 +203,7 @@ network access, or `--reference` to rely on an existing Paimon.moe export.
 | File not found | Drag the file into the window or paste the full path. On Windows, quotes are handled automatically. |
 | Unknown item names | Run once online to refresh the item database. If an item is still unknown, open an issue with the item name (no UID needed). |
 | No banner schedule found | Run online to refresh the cache, or pass `--reference` with a recent Paimon.moe export. Check `--server` if your UID is unusual. |
+| "No pulls found" with a valid file | The file may use merged cells (common in HoYo support exports). v1.0.5+ handles this automatically. If it still fails, run with `--debug-rows` and share the output. |
 | Import seems to be ignored | Paimon.moe is append-only; clear the current data before a full import. |
 | Cache is stale | Delete the `cache/` folder and run online again. |
 
