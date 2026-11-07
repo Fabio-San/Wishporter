@@ -249,3 +249,8 @@ Paimon.moe.
 Wishporter è uno strumento amatoriale non ufficiale. Non è affiliato,
 approvato o sponsorizzato da HoYoverse o Paimon.moe. Genshin Impact e tutti i
 nomi e gli asset correlati sono marchi o marchi registrati di HoYoverse.
+
+**Dichiarazione sull'uso dell'IA:** Wishporter è sviluppato da Fabio-San con
+l'assistenza di un agente di coding basato su IA (OpenCode). Requisiti,
+decisioni di progettazione, test e verifica sono a carico dell'autore. L'IA ha
+accelerato l'implementazione; non ha sostituito la revisione umana.

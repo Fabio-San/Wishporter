@@ -243,3 +243,8 @@ attribution.
 Wishporter is an unofficial fan tool. It is not affiliated with, endorsed by, or
 sponsored by HoYoverse or Paimon.moe. Genshin Impact and all related names and
 assets are trademarks or registered trademarks of HoYoverse.
+
+**AI disclosure:** Wishporter is developed by Fabio-San with the assistance of
+an AI coding agent (OpenCode). All requirements, design decisions, testing and
+verification are performed by the author. The AI accelerated implementation; it
+did not replace human review.
