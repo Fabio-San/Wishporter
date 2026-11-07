@@ -31,10 +31,13 @@ rarità e informazioni sul pity.
 
 ## Perché esiste Wishporter
 
-Nel 2024 alcuni giocatori hanno perso l'accesso alla cronologia desideri in
-gioco. Il supporto di HoYoverse può fornire una copia della cronologia su
-richiesta; i passaggi esatti per chiederla sono descritti in questa
-discussione su Reddit:
+Può capitare che Traveler vecchi o nuovi perdano traccia della cronologia
+desideri in gioco. Quando succede, recuperarla completamente da soli è quasi
+impossibile.
+
+Il supporto di HoYoverse può fornire una copia della cronologia desideri su
+richiesta. I passaggi esatti per chiederla sono descritti in questa discussione
+su Reddit:
 https://www.reddit.com/r/Genshin_Impact/comments/1wz77km/i_got_my_entire_wish_history_from_hoyo_since/
 
 Il file che ricevi dal supporto **non** è in un formato importabile da

@@ -30,9 +30,11 @@ with banner names, item types, rarity and pity information filled in.
 
 ## Why Wishporter exists
 
-In 2024 some players lost access to their in-game Wish History. HoYoverse
-support can provide a copy of your wish history on request; the exact steps to
-ask for it are described in this Reddit discussion:
+It can happen that old or new Travelers lose track of their in-game Wish History.
+When this happens, recovering it fully on your own is rarely possible.
+
+HoYoverse support can provide a copy of your wish history on request. The exact
+steps to ask for it are described in this Reddit discussion:
 https://www.reddit.com/r/Genshin_Impact/comments/1wz77km/i_got_my_entire_wish_history_from_hoyo_since/
 
 The file you receive from support is **not** in a format Paimon.moe can import,
