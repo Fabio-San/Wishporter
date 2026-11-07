@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="assets/icon.png" alt="Wishporter" width="140">
+  <img src="assets/banner.png" alt="Wishporter — Genshin Impact wish history to Paimon.moe converter" width="100%">
 </p>
 
 <h1 align="center">Wishporter</h1>
