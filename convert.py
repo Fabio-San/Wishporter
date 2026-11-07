@@ -765,6 +765,33 @@ def make_record(no_raw, uid, wish_type, item_name, time_value, line_number):
     }
 
 
+def _debug_print_rows(file_path):
+    """Print the first rows of each sheet for diagnosis."""
+    suffix = Path(file_path).suffix.lower()
+    if suffix == ".csv":
+        with open(file_path, mode="r", encoding="utf-8-sig", errors="replace", newline="") as handle:
+            reader = csv.reader(handle)
+            rows = [r for r in reader][:8]
+        print("[debug] CSV rows:")
+        for i, row in enumerate(rows, start=1):
+            print("  row %d: %r" % (i, row))
+        return
+    try:
+        workbook = openpyxl.load_workbook(file_path, data_only=True, read_only=True)
+    except Exception as exc:
+        print("[debug] Could not open file: %s" % exc)
+        return
+    try:
+        for name in workbook.sheetnames:
+            sheet = workbook[name]
+            rows = list(sheet.iter_rows(min_row=1, max_row=8, values_only=True))
+            print("[debug] Sheet '%s' (%d rows total):" % (name, sheet.max_row if hasattr(sheet, "max_row") else "?"))
+            for i, row in enumerate(rows, start=1):
+                print("  row %d: %r" % (i, row))
+    finally:
+        workbook.close()
+
+
 _COLUMN_KEYWORDS = {
     "no": ("no.", "no ", "#", "index", "number", "num", "序号", "번호", "番号", "номер"),
     "uid": ("uid", "user id", "user_id", "ユーザー", "用户", "player", "player id"),
@@ -792,10 +819,17 @@ def _detect_header_and_columns(rows):
 
         col_map = {}
         for i, cell in enumerate(cells):
+            best_field = None
+            best_len = 0
             for field, keywords in _COLUMN_KEYWORDS.items():
-                if field not in col_map and any(kw in cell for kw in keywords):
-                    col_map[field] = i
-                    break
+                if field in col_map:
+                    continue
+                for kw in keywords:
+                    if kw in cell and len(kw) > best_len:
+                        best_field = field
+                        best_len = len(kw)
+            if best_field:
+                col_map[best_field] = i
 
         if len(col_map) >= 2:
             defaults = {"no": 0, "uid": 1, "type": 2, "name": 3, "time": 4}
@@ -817,6 +851,9 @@ def parse_source_file(file_path):
         )
     if suffix not in (".xlsx", ".csv"):
         raise ValueError(i18n.t("unsupported_format", ext=suffix or "?"))
+
+    # Reset diagnostic state
+    parse_source_file._sample_first_col = []
 
     sheets = []
 
@@ -873,11 +910,36 @@ def parse_source_file(file_path):
                 row.append(None)
 
             no_col = col_map.get("no", 0)
-            if no_col >= len(row) or row[no_col] is None or not str(row[no_col]).strip().isdigit():
+            no_raw = row[no_col] if no_col < len(row) else None
+            # Accept integers, floats (1.0), and strings containing a number.
+            no_value = None
+            if no_raw is not None:
+                text = str(no_raw).strip()
+                # Remove invisible characters (BOM, zero-width spaces, etc.)
+                for cp in (0xFEFF, 0x200B, 0x200C, 0x200D, 0x00A0, 0x200E, 0x200F):
+                    text = text.replace(chr(cp), "")
+                text = text.strip()
+                # Remove common non-numeric prefixes/suffixes
+                text = text.strip("#").strip(".").strip()
+                # Try direct numeric conversion
+                try:
+                    no_value = int(float(text))
+                except (ValueError, TypeError):
+                    # Fallback: extract leading digits from text like "No. 1", "1st", "#1"
+                    import re as _re
+                    match = _re.match(r"^\\s*(\\d+)", text)
+                    if match:
+                        no_value = int(match.group(1))
+            if no_value is None:
                 skipped_no_digit += 1
+                # Track the actual value for diagnostics
+                if not hasattr(parse_source_file, "_sample_first_col"):
+                    parse_source_file._sample_first_col = []
+                if len(parse_source_file._sample_first_col) < 5:
+                    parse_source_file._sample_first_col.append(repr(no_raw))
                 continue
 
-            no_raw = row[no_col]
+            no_raw = no_value
             uid_col = col_map.get("uid", 1)
             type_col = col_map.get("type", 2)
             name_col = col_map.get("name", 3)
@@ -912,6 +974,9 @@ def parse_source_file(file_path):
             parts.append("No sheet contained recognizable pull data.")
         if skipped_no_digit:
             parts.append("%d row(s) skipped (first column not numeric)." % skipped_no_digit)
+            if getattr(parse_source_file, "_sample_first_col", None):
+                samples = ", ".join(parse_source_file._sample_first_col)
+                parts.append("Sample first-column values: %s." % samples)
         if skipped_parse_error:
             parts.append("%d row(s) skipped (parse errors, e.g. unknown wish type or invalid date)." % skipped_parse_error)
         if unknown_types:
@@ -1265,6 +1330,7 @@ def parse_args(argv):
     parser.add_argument("--lang", choices=i18n.available_languages(), help="UI language")
     parser.add_argument("--yes", action="store_true", help="overwrite without asking and avoid prompts")
     parser.add_argument("--debug", action="store_true", help="show full error details")
+    parser.add_argument("--debug-rows", action="store_true", help="print the first rows of each sheet for diagnosis")
     parser.add_argument("--version", action="store_true", help="show version and exit")
     return parser.parse_args(argv)
 
@@ -1302,6 +1368,10 @@ def main(argv=None):
                 print(i18n.t("output_renamed", file=str(output)))
 
         print(i18n.t("reading_source", file=str(source)))
+
+        if args.debug_rows:
+            _debug_print_rows(source)
+
         records = parse_source_file(source)
         if not records:
             print(i18n.t("no_pulls"))

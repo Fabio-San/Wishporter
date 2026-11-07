@@ -4,6 +4,19 @@ All notable changes to this project are documented here.
 The format follows [Keep a Changelog](https://keepachangelog.com/) and the
 project adheres to [Semantic Versioning](https://semver.org/).
 
+## [1.0.4] - 2026-11-07
+
+### Fixed
+
+- HoYo support exports where the wish number is stored as a float (e.g. `1.0`)
+  or contains invisible characters (BOM, zero-width spaces) are now recognized.
+- Numeric detection now also extracts leading digits from prefixed values
+  (e.g. "No. 1", "#1", "1st").
+- Header detection now uses longest-keyword matching to avoid false positives
+  (e.g. "nombre" no longer misclassified).
+- Added `--debug-rows` flag that prints the first rows of each sheet for
+  diagnosis.
+
 ## [1.0.3] - 2026-11-07
 
 ### Changed
