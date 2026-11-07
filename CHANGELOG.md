@@ -4,6 +4,16 @@ All notable changes to this project are documented here.
 The format follows [Keep a Changelog](https://keepachangelog.com/) and the
 project adheres to [Semantic Versioning](https://semver.org/).
 
+## [1.0.2] - 2026-11-07
+
+### Added
+
+- First-run interactive prompt: when no Paimon.moe export and no cached data
+  are found, Wishporter explains the situation and lets the user drag & drop an
+  export or press Enter to download the public banner data once (online) or
+  continue with generic banner names (offline).
+- Four new translated UI strings for the first-run prompt (7 languages).
+
 ## [1.0.1] - 2026-11-07
 
 ### Changed

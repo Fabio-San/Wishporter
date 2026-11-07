@@ -70,5 +70,9 @@
   "installing": "openpyxl wird installiert... (nur beim ersten Start)",
   "check_venv": "Lokale Umgebung: {status}",
   "help_body": "Verwendung:\n  run.py [Optionen] [Datei]\n\nOptionen:\n  datei.xlsx|.csv   Quelldatei (wird sonst abgefragt)\n  -o, --output      Ausgabedatei\n  --offline         Paimon.moe-Daten nicht herunterladen\n  --reference       Paimon.moe-Export als Bannerquelle nutzen\n  --server          Asia, China, America, Europe\n  --data-dir        Paimon.moe-Daten aus einem Ordner lesen\n  --lang            en, it, fr, de, es, pt, ru\n  --yes             ohne Nachfrage überschreiben und installieren\n  --check           nur Umgebungsprüfung\n  --version         Version anzeigen",
-  "help_download_note": "Python 3.9+ ist erforderlich: https://www.python.org/downloads/"
+  "help_download_note": "Python 3.9+ ist erforderlich: https://www.python.org/downloads/",
+  "reference_missing": "Kein Paimon.moe-Export in diesem Ordner gefunden.",
+  "reference_prompt": "Falls du einen hast, ziehe ihn hierher; sonst drücke Enter, um die Bannerdaten jetzt herunterzuladen (einmalig):",
+  "reference_prompt_offline": "Falls du einen hast, ziehe ihn hierher; sonst drücke Enter, um mit generischen Bannernamen fortzufahren:",
+  "reference_accepted": "[i] Verwende Paimon.moe-Export: {file}"
 }

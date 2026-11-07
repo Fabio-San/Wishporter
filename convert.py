@@ -1188,7 +1188,31 @@ def main(argv=None):
         # Only look for a Paimon.moe export when no local data files are
         # available: an explicit --data-dir or a populated cache wins.
         if not reference_file and not has_cached_data(data_dir):
-            reference_file = find_reference_file(source, output)
+            found = find_reference_file(source, output)
+            if found is not None:
+                reference_file = found
+            elif not args.yes and sys.stdin.isatty():
+                # First run without cache or reference: give the user a chance
+                # to provide a Paimon.moe export, or press Enter to download
+                # the public banner data once (online) / continue with generic
+                # names (offline).
+                print()
+                print(i18n.t("reference_missing"))
+                if args.offline:
+                    print(i18n.t("reference_prompt_offline"))
+                else:
+                    print(i18n.t("reference_prompt"))
+                try:
+                    raw = input("> ").strip()
+                except EOFError:
+                    raw = ""
+                if raw:
+                    resolved = resolve_source(raw)
+                    if resolved is not None:
+                        reference_file = resolved
+                        print(i18n.t("reference_accepted", file=str(reference_file)))
+                    else:
+                        print(i18n.t("source_not_found", path=raw))
 
         if args.offline:
             print(i18n.t("offline_mode"))
