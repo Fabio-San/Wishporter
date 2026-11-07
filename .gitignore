@@ -7,7 +7,7 @@
 !tests/**/*.xlsx
 !docs/**/*.csv
 
-# In-game exports and Paimon.moe reference exports
+# HoYo Excel exports and Paimon.moe reference exports
 paimonmoe_wish_history*
 work/
 

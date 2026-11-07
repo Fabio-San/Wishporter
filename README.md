@@ -131,10 +131,10 @@ say no, it writes a timestamped file instead.
 
 ## Input and output
 
-The in-game export has five columns: `No.`, `UID`, `Wish type`, `Wish award`,
+The HoYo Excel export has five columns: `No.`, `UID`, `Wish type`, `Wish award`,
 `Wish time`. The header row is skipped automatically. Any UID, server and
 number of pulls is supported, as long as the file comes from the official
-in-game export. Item names are expected in English (the default game language);
+HoYo Excel export. Item names are expected in English (the default game language);
 localized names are on the roadmap.
 
 The generated workbook contains:

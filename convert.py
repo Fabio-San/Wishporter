@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 """Genshin Impact wish history -> Paimon.moe Excel converter.
 
-This is the public entry point. It accepts the in-game Excel/CSV export
+This is the public entry point. It accepts the HoYo Excel/CSV export
 (columns: No., UID, Wish type, Wish award, Wish time), fills in the banner
 information using Paimon.moe's official data, and writes an Excel file that
 Paimon.moe can import.
@@ -800,7 +800,7 @@ def parse_source_file(file_path):
         finally:
             workbook.close()
 
-    # The in-game export is newest-first. Within the same second, the lower
+    # The HoYo export is newest-first. Within the same second, the lower
     # "No." is the newer pull, so the chronological order is time ascending,
     # No. descending.
     rows.sort(key=lambda row: (row["dt"], -row["no"]))

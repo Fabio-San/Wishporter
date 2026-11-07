@@ -33,7 +33,7 @@
   "reference_used": "[i] Использую данные баннеров из {file}.",
   "generic_banners": "[!] Нет данных баннеров: использую общие названия (импорт их игнорирует).",
   "data_parse_failed": "[!] Не удалось прочитать данные Paimon.moe: {error}",
-  "unsupported_format": "Неподдерживаемый формат: {ext}. Используйте экспорт .xlsx или .csv из игры.",
+  "unsupported_format": "Неподдерживаемый формат: {ext}. Используйте экспорт HoYo Excel (.xlsx или .csv).",
   "py_too_old": "Найден Python {found}, но требуется Python 3.9+.",
   "py_ok": "Обнаружен Python {version}.",
   "dep_present": "openpyxl уже установлен.",

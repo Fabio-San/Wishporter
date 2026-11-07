@@ -135,11 +135,11 @@ rifiuti, scrive un nuovo file con data e ora nel nome.
 
 ## Input e output
 
-L'export del gioco ha cinque colonne: `No.`, `UID`, `Wish type`, `Wish award`,
+L'export HoYo Excel ha cinque colonne: `No.`, `UID`, `Wish type`, `Wish award`,
 `Wish time`. La riga di intestazione viene saltata automaticamente. Qualsiasi
 UID, server e numero di pull è supportato, purché il file provenga dall'export
-ufficiale. Per la v1 i nomi degli oggetti devono essere in inglese (lingua
-predefinita del gioco); i nomi localizzati sono nella roadmap.
+ufficiale HoYo Excel. Per la v1 i nomi degli oggetti devono essere in inglese
+(lingua predefinita del gioco); i nomi localizzati sono nella roadmap.
 
 Il file generato contiene:
 

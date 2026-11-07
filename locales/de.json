@@ -33,7 +33,7 @@
   "reference_used": "[i] Verwende Bannerdaten aus {file}.",
   "generic_banners": "[!] Keine Bannerdaten: generische Namen (der Import ignoriert sie).",
   "data_parse_failed": "[!] Paimon.moe-Daten konnten nicht gelesen werden: {error}",
-  "unsupported_format": "Nicht unterstütztes Format: {ext}. Verwende den .xlsx- oder .csv-Export aus dem Spiel.",
+  "unsupported_format": "Nicht unterstütztes Format: {ext}. Verwende den HoYo-Excel-Export (.xlsx oder .csv).",
   "py_too_old": "Python {found} gefunden, aber Python 3.9+ ist erforderlich.",
   "py_ok": "Python {version} erkannt.",
   "dep_present": "openpyxl ist bereits installiert.",

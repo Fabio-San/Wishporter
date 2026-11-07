@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-"""End-to-end tests using a synthetic in-game export and fixture data."""
+"""End-to-end tests using a synthetic HoYo Excel export and fixture data."""
 
 import contextlib
 import csv

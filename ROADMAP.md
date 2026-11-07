@@ -5,7 +5,7 @@ community feedback; open an issue if you want to push a specific item.
 
 ## v1.0 — current release
 
-- In-game Excel/CSV export (columns `No.`, `UID`, `Wish type`, `Wish award`, `Wish time`)
+- HoYo Excel/CSV export (columns `No.`, `UID`, `Wish type`, `Wish award`, `Wish time`)
 - Character Event, Weapon Event, Standard and Beginners' Wish
 - Banner names from Paimon.moe, including dual banners (`Wish 2`)
 - Windows and Linux launchers with dependency checks and local `.venv`
@@ -22,7 +22,7 @@ community feedback; open an issue if you want to push a specific item.
 
 ## v1.2 — better data coverage
 
-- Localized item-name mapping (the in-game export uses English item names;
+- Localized item-name mapping (the HoYo Excel export uses English item names;
   players on other game languages can produce localized names).
 - Improved banner matching for Chronicled Wish and reruns.
 - Optional automatic refresh of the Paimon.moe cache when it is older than N days.
@@ -36,5 +36,5 @@ community feedback; open an issue if you want to push a specific item.
 ## Not planned
 
 - Direct account login or unofficial API calls. Wishporter only reads the
-  official in-game export and never asks for HoYoverse credentials.
+  official HoYo Excel export and never asks for HoYoverse credentials.
 - Uploading wish data anywhere. Everything stays on the user's computer.
