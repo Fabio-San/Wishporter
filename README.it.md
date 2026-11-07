@@ -11,6 +11,7 @@
   <img src="https://img.shields.io/badge/python-3.9%2B-3776AB?logo=python&logoColor=white" alt="Python 3.9+">
   <img src="https://img.shields.io/badge/platform-Windows%20%7C%20Linux%20%7C%20macOS-lightgrey" alt="Piattaforme">
   <img src="https://img.shields.io/badge/languages-7-yellow" alt="7 lingue">
+  <img src="https://img.shields.io/badge/translations-welcome-brightgreen" alt="Traduzioni benvenute">
   <img src="https://img.shields.io/badge/license-MIT-green" alt="Licenza MIT">
 </p>
 
@@ -27,6 +28,23 @@ rarità e informazioni sul pity.
 - Interfaccia in inglese, italiano, francese, tedesco, spagnolo, portoghese e russo
 - Scarica i dati di Paimon.moe una volta, poi funziona offline
 - Nessun login, nessuna telemetria, nessun dato delle tue pull lascia il PC
+
+## Perché esiste Wishporter
+
+Nel 2024 alcuni giocatori hanno perso l'accesso alla cronologia desideri in
+gioco. Il supporto di HoYoverse può fornire una copia della cronologia su
+richiesta; i passaggi esatti per chiederla sono descritti in questa
+discussione su Reddit:
+https://www.reddit.com/r/Genshin_Impact/comments/1wz77km/i_got_my_entire_wish_history_from_hoyo_since/
+
+Il file che ricevi dal supporto **non** è in un formato importabile da
+Paimon.moe, e convertire migliaia di pull a mano non è realistico.
+Wishporter automatizza questo passaggio: gli dai il file ottenuto dal supporto
+HoYo e ottieni un file Excel pronto per Paimon.moe.
+
+> Se hai ricevuto l'export tramite un altro canale, Wishporter funziona lo
+> stesso, purché il file abbia le cinque colonne `No.`, `UID`, `Wish type`,
+> `Wish award`, `Wish time`.
 
 ## Avvio rapido
 
@@ -149,6 +167,20 @@ ricadono sull'inglese.
 
 Vuoi aggiungere una lingua? Leggi [`locales/README.md`](locales/README.md). I
 cataloghi sono piccoli e le traduzioni della community sono molto benvenute.
+
+## Le traduzioni sono aperte a tutti, gratuitamente
+
+Wishporter è tradotto dalla community e **chiunque può aggiungere una nuova
+lingua senza costi**: nessun account, nessuna quota, nessun accordo di
+contributo.
+
+1. Fai un fork del repository e copia `locales/en.json` in `locales/<codice>.json`.
+2. Traduci i valori (mantieni le chiavi e i `{segnaposto}`).
+3. Aggiungi il codice a `SUPPORTED` in `i18n.py`.
+4. Apri una pull request.
+
+Se non usi Git, apri una issue con la tua traduzione e la aggiungiamo noi.
+Vedi [`locales/README.md`](locales/README.md) per la guida completa.
 
 ## Privacy
 
