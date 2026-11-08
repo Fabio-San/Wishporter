@@ -1,25 +1,8 @@
 // Service worker for offline support
-const CACHE_NAME = "wishporter-v1";
+const CACHE_NAME = "wishporter-v2";
 const BASE = self.location.pathname.replace(/\/[^/]*$/, "/");
-const ASSETS = [
-  BASE,
-  BASE + "index.html",
-  BASE + "style.css",
-  BASE + "app.js",
-  BASE + "i18n.js",
-  BASE + "cache.js",
-  BASE + "parser.js",
-  BASE + "converter.js",
-  BASE + "excel.js",
-  BASE + "manifest.json",
-  BASE + "assets/icon.svg",
-  BASE + "assets/icon.png",
-];
 
 self.addEventListener("install", (event) => {
-  event.waitUntil(
-    caches.open(CACHE_NAME).then((cache) => cache.addAll(ASSETS))
-  );
   self.skipWaiting();
 });
 
@@ -36,17 +19,34 @@ self.addEventListener("fetch", (event) => {
   const url = new URL(event.request.url);
   // Don't cache cross-origin requests (Paimon.moe data)
   if (url.origin !== self.location.origin) return;
-  event.respondWith(
-    caches.match(event.request).then((cached) => {
-      if (cached) return cached;
-      return fetch(event.request).then((response) => {
-        // Cache successful responses for same-origin assets
+
+  const isCode = url.pathname.endsWith(".js") || url.pathname.endsWith(".css") ||
+    url.pathname.endsWith(".html") || url.pathname === BASE || url.pathname === BASE + "index.html";
+
+  if (isCode) {
+    // Network-first for code files: always try network, fall back to cache
+    event.respondWith(
+      fetch(event.request).then((response) => {
         if (response.ok && response.type === "basic") {
           const clone = response.clone();
           caches.open(CACHE_NAME).then((cache) => cache.put(event.request, clone));
         }
         return response;
-      });
-    })
-  );
+      }).catch(() => caches.match(event.request))
+    );
+  } else {
+    // Cache-first for assets (images, etc.)
+    event.respondWith(
+      caches.match(event.request).then((cached) => {
+        if (cached) return cached;
+        return fetch(event.request).then((response) => {
+          if (response.ok && response.type === "basic") {
+            const clone = response.clone();
+            caches.open(CACHE_NAME).then((cache) => cache.put(event.request, clone));
+          }
+          return response;
+        });
+      })
+    );
+  }
 });
