@@ -1,6 +1,9 @@
 // parser.js — port of convert.py parsing logic to JavaScript
 // Requires: ExcelJS (loaded from CDN)
 
+// Ensure window.parser exists
+window.parser = window.parser || {};
+
 // ── Minimal JavaScript literal parser for Paimon.moe data files ──
 
 class JsLiteralParser {
@@ -629,13 +632,11 @@ async function loadEverything(referenceItems, referenceBanners, referenceDual, s
 }
 
 // Export for use in app.js
-window.parser = {
+Object.assign(window.parser, {
   cleanItemName, parseDatetime, formatDatetime, normalizeWishType,
-  detectServer, parseJsExport, parseItemsTexts: null, // filled below
-  parseBannersTexts: null,
-  parseSourceFile, enrichCategory, applyStripes,
+  detectServer, parseJsExport, parseSourceFile,
   SERVER_OFFSETS, SERVER_BY_UID_PREFIX,
-};
+});
 
 // We'll attach parseItemsTexts and parseBannersTexts after defining them
 // (they're defined above as functions, just need to wire)

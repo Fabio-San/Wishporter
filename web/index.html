@@ -32,20 +32,20 @@
 
     <!-- Source format -->
     <section class="card">
-      <label for="sourceFormat" class="label">Source format</label>
+      <label for="sourceFormat" class="label" data-i18n="web_source_format">Source format</label>
       <select id="sourceFormat" class="select">
-        <option value="hoyo-excel" selected>HoYo Excel (.xlsx / .csv)</option>
-        <option value="uigf-json" disabled>UIGF JSON (coming soon)</option>
-        <option value="paimon-export" disabled>Paimon.moe export (coming soon)</option>
+        <option value="hoyo-excel" selected data-i18n="web_format_hoyo">HoYo Excel (.xlsx / .csv)</option>
+        <option value="uigf-json" disabled data-i18n="web_format_uigf">UIGF JSON (coming soon)</option>
+        <option value="paimon-export" disabled data-i18n="web_format_paimon">Paimon.moe export (coming soon)</option>
       </select>
-      <p class="hint" id="formatHint">Auto-detected from file</p>
+      <p class="hint" id="formatHint" data-i18n="web_format_hint">Auto-detected from file</p>
     </section>
 
     <!-- File upload -->
     <section class="card">
       <div id="dropZone" class="drop-zone">
-        <p class="drop-text">Drop your file here</p>
-        <p class="drop-sub">or click to browse</p>
+        <p class="drop-text" data-i18n="web_drop_text">Drop your file here</p>
+        <p class="drop-sub" data-i18n="web_drop_sub">or click to browse</p>
         <input type="file" id="fileInput" accept=".xlsx,.xls,.csv,.json" hidden>
       </div>
       <p id="fileName" class="file-name hidden"></p>
@@ -54,9 +54,9 @@
     <!-- Options -->
     <section class="card options">
       <div class="option-row">
-        <label for="serverSelect" class="label">Server</label>
+        <label for="serverSelect" class="label" data-i18n="web_server">Server</label>
         <select id="serverSelect" class="select">
-          <option value="auto" selected>Auto (from UID)</option>
+          <option value="auto" selected data-i18n="web_server_auto">Auto (from UID)</option>
           <option value="Asia">Asia</option>
           <option value="China">China</option>
           <option value="America">America</option>
@@ -64,19 +64,19 @@
         </select>
       </div>
       <div class="option-row">
-        <label for="langSelect" class="label">Language</label>
+        <label for="langSelect" class="label" data-i18n="web_language">Language</label>
         <select id="langSelect" class="select"></select>
       </div>
       <div class="option-row">
         <label class="checkbox-label">
           <input type="checkbox" id="offlineMode">
-          <span>Offline mode (no downloads)</span>
+          <span data-i18n="web_offline_mode">Offline mode (no downloads)</span>
         </label>
       </div>
     </section>
 
     <!-- Convert button -->
-    <button id="convertBtn" class="btn-primary" disabled>Convert</button>
+    <button id="convertBtn" class="btn-primary" disabled data-i18n="web_convert">Convert</button>
 
     <!-- Progress -->
     <div id="progress" class="progress hidden">
@@ -88,10 +88,10 @@
 
     <!-- Result -->
     <section id="result" class="card result hidden">
-      <h2>Result</h2>
+      <h2 data-i18n="web_result">Result</h2>
       <ul id="resultSummary" class="summary"></ul>
-      <button id="downloadBtn" class="btn-secondary">Download *_paimonmoe.xlsx</button>
-      <p class="hint">Paimon.moe reads columns A (Type), B (Name), C (Time) and I (Part).</p>
+      <button id="downloadBtn" class="btn-secondary" data-i18n="web_download">Download *_paimonmoe.xlsx</button>
+      <p class="hint" data-i18n="web_paimon_note">Paimon.moe reads columns A (Type), B (Name), C (Time) and I (Part).</p>
     </section>
 
     <!-- Error -->
@@ -102,10 +102,10 @@
     <!-- Data status -->
     <section class="card data-status">
       <div class="data-row">
-        <span>Banner data:</span>
-        <span id="dataStatus" class="status-badge">Not loaded</span>
+        <span data-i18n="web_banner_data">Banner data:</span>
+        <span id="dataStatus" class="status-badge" data-i18n="web_not_loaded">Not loaded</span>
       </div>
-      <button id="refreshDataBtn" class="btn-small">Refresh data</button>
+      <button id="refreshDataBtn" class="btn-small" data-i18n="web_refresh_data">Refresh data</button>
     </section>
   </main>
 

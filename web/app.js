@@ -98,6 +98,7 @@
     }
     const detected = await window.i18n.setLanguage();
     langSelect.value = detected;
+    updateUIStrings();
     langSelect.addEventListener("change", async () => {
       await window.i18n.setLanguage(langSelect.value);
       localStorage.setItem("paimon_lang", langSelect.value);
@@ -107,23 +108,33 @@
 
   function updateUIStrings() {
     const t = window.i18n.t;
-    document.querySelector(".tagline").textContent = t("app_tagline");
-    // Update other static strings if needed
+    document.querySelectorAll("[data-i18n]").forEach((el) => {
+      const key = el.getAttribute("data-i18n");
+      if (!key) return;
+      const translated = t(key);
+      if (translated && translated !== key) {
+        el.textContent = translated;
+      }
+    });
+    // Update tagline (not a data-i18n element)
+    const tagline = document.querySelector(".tagline");
+    if (tagline) tagline.textContent = t("app_tagline");
   }
 
   // ── Data status ──
   async function updateDataStatus() {
     try {
       const has = await window.cache.hasCachedData();
+      const t = window.i18n.t;
       if (has) {
-        dataStatus.textContent = "Cached";
+        dataStatus.textContent = t("web_cached");
         dataStatus.className = "status-badge loaded";
       } else {
-        dataStatus.textContent = "Not cached";
+        dataStatus.textContent = t("web_not_cached");
         dataStatus.className = "status-badge";
       }
     } catch {
-      dataStatus.textContent = "Unknown";
+      dataStatus.textContent = "?";
       dataStatus.className = "status-badge";
     }
   }
@@ -292,7 +303,7 @@
   refreshDataBtn.addEventListener("click", async () => {
     try {
       await window.cache.clearCache();
-      dataStatus.textContent = "Cleared";
+      dataStatus.textContent = window.i18n.t("web_cleared");
       dataStatus.className = "status-badge";
       alert("Cache cleared. Data will be re-downloaded on next conversion.");
     } catch (e) {
