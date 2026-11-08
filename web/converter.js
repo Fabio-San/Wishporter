@@ -331,14 +331,10 @@ window.converter = {
   formatDatetime,
 };
 
-// Attach to window.parser
+// Attach to window.parser (only functions defined in this file)
 window.parser.makeGenericBanners = makeGenericBanners;
-window.parser.buildBannerScheduleFromReference = buildBannerScheduleFromReference;
-window.parser.loadReferenceFile = loadReferenceFile;
 window.parser.enrichCategory = enrichCategory;
 window.parser.applyStripes = applyStripes;
-window.parser.makeRecord = makeRecord;
-window.parser.parseSourceFile = parseSourceFile;
 window.parser.loadEverything = loadEverything;
 window.parser.CATEGORY_TO_SHEET = CATEGORY_TO_SHEET;
 window.parser.FALLBACK_ITEMS = FALLBACK_ITEMS;

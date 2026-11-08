@@ -423,8 +423,7 @@ function makeGenericBanners() {
 }
 
 // ── Source file parsing ──
-const SERVER_OFFSETS = { Asia: 8, China: 8, America: -5, Europe: 1 };
-const SERVER_BY_UID_PREFIX = { "1": "China", "2": "China", "3": "China", "4": "China", "5": "Asia", "6": "America", "7": "Europe", "8": "Asia", "9": "Asia" };
+// SERVER_OFFSETS and SERVER_BY_UID_PREFIX already declared above.
 function detectServer(uid) { return SERVER_BY_UID_PREFIX[String(uid).trim()[0]] || "Europe"; }
 
 function cleanItemName(name) {
