@@ -65,3 +65,23 @@ jobs:
         with:
           name: wishporter-zip
           path: dist/*.zip
+
+  deploy-pages:
+    name: Deploy to GitHub Pages
+    needs: [test, launcher]
+    if: github.ref == 'refs/heads/main'
+    permissions:
+      pages: write
+      id-token: write
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/configure-pages@v5
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: web/
+      - id: deployment
+        uses: actions/deploy-pages@v4

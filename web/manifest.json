@@ -1,0 +1,13 @@
+{
+  "name": "Wishporter",
+  "short_name": "Wishporter",
+  "description": "Genshin Impact wish history to Paimon.moe converter",
+  "start_url": "./",
+  "display": "standalone",
+  "background_color": "#0f172a",
+  "theme_color": "#0d9488",
+  "icons": [
+    { "src": "assets/icon.svg", "sizes": "any", "type": "image/svg+xml" },
+    { "src": "assets/icon.png", "sizes": "1024x1024", "type": "image/png" }
+  ]
+}

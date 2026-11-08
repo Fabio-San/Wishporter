@@ -27,6 +27,12 @@ community feedback; open an issue if you want to push a specific item.
 - Improved banner matching for Chronicled Wish and reruns.
 - Optional automatic refresh of the Paimon.moe cache when it is older than N days.
 
+## v1.1 — web version
+
+- Browser-based version hosted on GitHub Pages (no installation required).
+- Same features as the desktop tool, with drag & drop and offline support (PWA).
+- Source format selector: HoYo Excel, UIGF JSON, Paimon.moe export.
+
 ## v2.0 — broader UX
 
 - Optional desktop GUI (tkinter) for users who prefer not to use a terminal.

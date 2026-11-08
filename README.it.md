@@ -49,6 +49,18 @@ HoYo e ottieni un file Excel pronto per Paimon.moe.
 > stesso, purché il file abbia le cinque colonne `No.`, `UID`, `Wish type`,
 > `Wish award`, `Wish time`.
 
+## Versione web (senza installazione)
+
+Una versione basata su browser è disponibile su:
+**https://fabio-san.github.io/Wishporter/**
+
+Nessun Python, nessun download, nessuna installazione. Apri il link, trascina
+il file e scarica il risultato. Funziona offline dopo la prima visita.
+
+La versione web ha le stesse funzionalità dello strumento desktop. Per
+l'automazione e l'uso avanzato, la CLI Python (`convert.py`) e i launcher
+(`run.bat`, `run.sh`) restano disponibili.
+
 ## Avvio rapido
 
 ### Windows

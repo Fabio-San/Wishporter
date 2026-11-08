@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Wishporter — Genshin Impact wish history → Paimon.moe converter</title>
+  <meta name="description" content="Convert your Genshin Impact wish history export into a Paimon.moe import file. Free, open source, privacy-first.">
+  <link rel="icon" href="assets/icon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="style.css">
+  <link rel="manifest" href="manifest.json">
+</head>
+<body>
+  <header>
+    <div class="header-inner">
+      <img src="assets/icon.svg" alt="Wishporter" class="logo" width="32" height="32">
+      <div>
+        <h1>Wishporter</h1>
+        <p class="tagline">Genshin Impact wish history → Paimon.moe converter</p>
+      </div>
+      <button id="themeToggle" class="theme-toggle" aria-label="Toggle dark mode" title="Toggle theme">
+        <span class="theme-icon">🌙</span>
+      </button>
+    </div>
+  </header>
+
+  <main>
+    <!-- Loading overlay -->
+    <div id="loadingOverlay" class="loading-overlay hidden">
+      <div class="spinner"></div>
+      <p id="loadingText">Loading...</p>
+    </div>
+
+    <!-- Source format -->
+    <section class="card">
+      <label for="sourceFormat" class="label">Source format</label>
+      <select id="sourceFormat" class="select">
+        <option value="hoyo-excel" selected>HoYo Excel (.xlsx / .csv)</option>
+        <option value="uigf-json" disabled>UIGF JSON (coming soon)</option>
+        <option value="paimon-export" disabled>Paimon.moe export (coming soon)</option>
+      </select>
+      <p class="hint" id="formatHint">Auto-detected from file</p>
+    </section>
+
+    <!-- File upload -->
+    <section class="card">
+      <div id="dropZone" class="drop-zone">
+        <p class="drop-text">Drop your file here</p>
+        <p class="drop-sub">or click to browse</p>
+        <input type="file" id="fileInput" accept=".xlsx,.xls,.csv,.json" hidden>
+      </div>
+      <p id="fileName" class="file-name hidden"></p>
+    </section>
+
+    <!-- Options -->
+    <section class="card options">
+      <div class="option-row">
+        <label for="serverSelect" class="label">Server</label>
+        <select id="serverSelect" class="select">
+          <option value="auto" selected>Auto (from UID)</option>
+          <option value="Asia">Asia</option>
+          <option value="China">China</option>
+          <option value="America">America</option>
+          <option value="Europe">Europe</option>
+        </select>
+      </div>
+      <div class="option-row">
+        <label for="langSelect" class="label">Language</label>
+        <select id="langSelect" class="select"></select>
+      </div>
+      <div class="option-row">
+        <label class="checkbox-label">
+          <input type="checkbox" id="offlineMode">
+          <span>Offline mode (no downloads)</span>
+        </label>
+      </div>
+    </section>
+
+    <!-- Convert button -->
+    <button id="convertBtn" class="btn-primary" disabled>Convert</button>
+
+    <!-- Progress -->
+    <div id="progress" class="progress hidden">
+      <div class="progress-bar">
+        <div id="progressFill" class="progress-fill"></div>
+      </div>
+      <p id="progressText" class="progress-text"></p>
+    </div>
+
+    <!-- Result -->
+    <section id="result" class="card result hidden">
+      <h2>Result</h2>
+      <ul id="resultSummary" class="summary"></ul>
+      <button id="downloadBtn" class="btn-secondary">Download *_paimonmoe.xlsx</button>
+      <p class="hint">Paimon.moe reads columns A (Type), B (Name), C (Time) and I (Part).</p>
+    </section>
+
+    <!-- Error -->
+    <div id="errorBox" class="error-box hidden">
+      <p id="errorText"></p>
+    </div>
+
+    <!-- Data status -->
+    <section class="card data-status">
+      <div class="data-row">
+        <span>Banner data:</span>
+        <span id="dataStatus" class="status-badge">Not loaded</span>
+      </div>
+      <button id="refreshDataBtn" class="btn-small">Refresh data</button>
+    </section>
+  </main>
+
+  <footer>
+    <p>
+      <a href="https://github.com/Fabio-San/Wishporter" target="_blank" rel="noopener">GitHub</a> ·
+      <a href="https://github.com/Fabio-San/Wishporter/blob/main/ROADMAP.md" target="_blank" rel="noopener">Roadmap</a> ·
+      <a href="https://github.com/Fabio-San/Wishporter/blob/main/locales/README.md" target="_blank" rel="noopener">Translations</a> ·
+      <a href="https://github.com/Fabio-San/Wishporter/blob/main/README.md#privacy" target="_blank" rel="noopener">Privacy</a>
+    </p>
+    <p class="footer-note">
+      Unofficial fan tool. Not affiliated with HoYoverse or Paimon.moe.
+      MIT licensed. Developed by Fabio-San with AI assistance (OpenCode).
+    </p>
+  </footer>
+
+  <!-- Libraries -->
+  <script src="https://cdn.jsdelivr.net/npm/exceljs@4.4.0/dist/exceljs.min.js"></script>
+
+  <!-- App -->
+  <script src="i18n.js"></script>
+  <script src="cache.js"></script>
+  <script src="parser.js"></script>
+  <script src="converter.js"></script>
+  <script src="excel.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>

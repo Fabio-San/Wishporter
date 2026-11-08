@@ -46,6 +46,22 @@ Paimon.moe-ready Excel file.
 > works as long as the file has the five columns `No.`, `UID`, `Wish type`,
 > `Wish award`, `Wish time`.
 
+## Web version (no installation)
+
+A browser-based version is available at:
+**https://fabio-san.github.io/Wishporter/**
+
+No Python, no downloads, no installation. Just open the link, drop your file,
+and download the result. Works offline after the first visit.
+
+The web version has the same features as the desktop tool. For automation
+and advanced use, the Python CLI (`convert.py`) and launchers (`run.bat`,
+`run.sh`) are still available.
+
+> **Note for contributors:** to enable GitHub Pages on your fork, go to
+> Settings → Pages → Source: "GitHub Actions". The `deploy-pages` job in
+> `.github/workflows/ci.yml` handles the rest.
+
 ## Quick start
 
 ### Windows
