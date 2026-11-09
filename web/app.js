@@ -108,6 +108,7 @@
 
   function updateUIStrings() {
     const t = window.i18n.t;
+    document.documentElement.lang = window.i18n.currentLanguage();
     document.querySelectorAll("[data-i18n]").forEach((el) => {
       const key = el.getAttribute("data-i18n");
       if (!key) return;
@@ -119,6 +120,7 @@
     // Update tagline (not a data-i18n element)
     const tagline = document.querySelector(".tagline");
     if (tagline) tagline.textContent = t("app_tagline");
+    updateFormatHint();
   }
 
   // ── Data status ──
@@ -140,6 +142,18 @@
   }
 
   // ── File handling ──
+  function updateFormatHint() {
+    if (!currentFile) return;
+    const t = window.i18n.t;
+    const key =
+      detectedFormat === "uigf-json"
+        ? "web_detected_uigf"
+        : detectedFormat === "hoyo-excel"
+        ? "web_detected_hoyo"
+        : "web_detected_unknown";
+    formatHint.textContent = t(key);
+  }
+
   function handleFile(file) {
     if (!file) return;
     currentFile = file;
@@ -153,16 +167,14 @@
     if (name.endsWith(".json")) {
       detectedFormat = "uigf-json";
       sourceFormat.value = "uigf-json";
-      formatHint.textContent = "Detected: UIGF JSON (not yet supported)";
     } else if (name.endsWith(".xlsx") || name.endsWith(".xls") || name.endsWith(".csv")) {
       detectedFormat = "hoyo-excel";
       sourceFormat.value = "hoyo-excel";
-      formatHint.textContent = "Detected: HoYo Excel";
     } else {
-      detectedFormat = "hoyo-excel";
+      detectedFormat = "unknown";
       sourceFormat.value = "hoyo-excel";
-      formatHint.textContent = "Unknown format — will try HoYo Excel";
     }
+    updateFormatHint();
 
     convertBtn.disabled = false;
   }
@@ -190,16 +202,17 @@
     convertBtn.disabled = true;
 
     try {
-      setProgress(5, "Reading file...");
+      const t = window.i18n.t;
+      setProgress(5, t("web_progress_reading"));
       const records = await window.parser.parseSourceFile(currentFile);
       if (!records || records.length === 0) {
-        throw new Error("No valid pulls found in the source file.");
+        throw new Error(t("web_no_pulls"));
       }
 
       const uid = records[0].uid;
       const server = serverSelect.value === "auto" ? window.parser.detectServer(uid) : serverSelect.value;
 
-      setProgress(15, "Loading banner data...");
+      setProgress(15, t("web_progress_loading"));
       let referenceData = null;
       // Check if user provided a reference file (not in this UI, but for future)
       const offline = offlineMode.checked;
@@ -213,7 +226,7 @@
         console.log(note);
       }
 
-      setProgress(60, "Enriching pull data...");
+      setProgress(60, t("web_progress_enriching"));
 
       // Resolve item types
       const unknown = [];
@@ -225,7 +238,7 @@
       }
       if (unknown.length) {
         const unique = [...new Set(unknown)].sort();
-        throw new Error("Unknown items: " + unique.join(", ") + ". Run online once to update the item database.");
+        throw new Error(t("web_unknown_items", { items: unique.join(", ") }));
       }
 
       // Group by category
@@ -235,17 +248,17 @@
         byCategory[row.category].push(row);
       }
 
-      setProgress(70, "Computing pity and banners...");
+      setProgress(70, t("web_progress_computing"));
       for (const [cat, rows] of Object.entries(byCategory)) {
         const selectedBanners = banners[cat] || [];
         if (selectedBanners.length === 0) {
-          throw new Error(`No banner schedule found for ${rows[0].time} (${rows[0].itemName})`);
+          throw new Error(t("web_no_banner", { time: rows[0].time, item: rows[0].itemName }));
         }
         window.converter.enrichCategory(rows, selectedBanners);
         window.converter.applyStripes(rows);
       }
 
-      setProgress(85, "Generating Excel file...");
+      setProgress(85, t("web_progress_generating"));
       const buffer = await window.excel.buildExcel(records, bannerListRows);
 
       resultBuffer = buffer;
@@ -253,23 +266,16 @@
       resultFileName = baseName + "_paimonmoe.xlsx";
 
       // Summary
-      const summary = ["characters", "weapons", "standard", "beginners"]
-        .map((cat) => {
-          const sheetName = window.converter.CATEGORY_TO_SHEET[cat];
-          const count = (byCategory[cat] || []).length;
-          return `${sheetName}: ${count}`;
-        })
-        .join(" · ");
       resultSummary.innerHTML = "";
       for (const cat of ["characters", "weapons", "standard", "beginners"]) {
         const sheetName = window.converter.CATEGORY_TO_SHEET[cat];
         const count = (byCategory[cat] || []).length;
         const li = document.createElement("li");
-        li.textContent = `${sheetName}: ${count} pulls`;
+        li.textContent = t("web_summary_line", { sheet: sheetName, count });
         resultSummary.appendChild(li);
       }
 
-      setProgress(100, "Done!");
+      setProgress(100, t("web_progress_done"));
       setTimeout(() => hideProgress(), 500);
       result.classList.remove("hidden");
 
@@ -302,12 +308,13 @@
   // ── Refresh data ──
   refreshDataBtn.addEventListener("click", async () => {
     try {
+      const t = window.i18n.t;
       await window.cache.clearCache();
-      dataStatus.textContent = window.i18n.t("web_cleared");
+      dataStatus.textContent = t("web_cleared");
       dataStatus.className = "status-badge";
-      alert("Cache cleared. Data will be re-downloaded on next conversion.");
+      alert(t("web_cache_cleared_alert"));
     } catch (e) {
-      showError("Failed to clear cache: " + e.message);
+      showError(t("web_cache_clear_failed", { error: e.message }));
     }
   });
 
@@ -327,7 +334,7 @@
 
     // Check if ExcelJS is loaded
     if (typeof ExcelJS === "undefined") {
-      showError("ExcelJS library failed to load. Please check your internet connection and refresh.");
+      showError(window.i18n.t("web_exceljs_failed"));
       return;
     }
   }

@@ -95,5 +95,21 @@
   "web_not_cached": "Not cached",
   "web_cached": "Cached",
   "web_refresh_data": "Refresh data",
-  "web_cleared": "Cleared"
+  "web_cleared": "Cleared",
+  "web_detected_hoyo": "Detected: HoYo Excel",
+  "web_detected_uigf": "Detected: UIGF JSON (not yet supported)",
+  "web_detected_unknown": "Unknown format — will try HoYo Excel",
+  "web_progress_reading": "Reading file...",
+  "web_progress_loading": "Loading banner data...",
+  "web_progress_enriching": "Enriching pull data...",
+  "web_progress_computing": "Computing pity and banners...",
+  "web_progress_generating": "Generating Excel file...",
+  "web_progress_done": "Done!",
+  "web_no_pulls": "No valid pulls found in the source file.",
+  "web_unknown_items": "Unknown items: {items}. Run online once to update the item database.",
+  "web_no_banner": "No banner schedule found for {time} ({item}).",
+  "web_cache_cleared_alert": "Cache cleared. Data will be re-downloaded on next conversion.",
+  "web_cache_clear_failed": "Failed to clear cache: {error}",
+  "web_exceljs_failed": "ExcelJS library failed to load. Please check your internet connection and refresh.",
+  "web_summary_line": "{sheet}: {count} pulls"
 }
