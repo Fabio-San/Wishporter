@@ -1,5 +1,5 @@
 // Service worker for offline support
-const CACHE_NAME = "wishporter-v2";
+const CACHE_NAME = "wishporter-v3";
 const BASE = self.location.pathname.replace(/\/[^/]*$/, "/");
 
 self.addEventListener("install", (event) => {

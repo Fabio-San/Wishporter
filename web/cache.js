@@ -67,7 +67,7 @@ async function loadPaimonData(offline) {
   for (const f of DATA_FILES) {
     if (!offline) {
       try {
-        const res = await fetch(f.url, { headers: { "User-Agent": "wishporter-web/1.0" } });
+        const res = await fetch(f.url, { cache: "no-cache" });
         if (res.ok) {
           const text = await res.text();
           texts[f.key] = text;

@@ -204,7 +204,7 @@
       // Check if user provided a reference file (not in this UI, but for future)
       const offline = offlineMode.checked;
 
-      const { items, banners, bannerListRows, notes } = await window.parser.loadEverything(
+      const { items, banners, bannerListRows, notes } = await window.converter.loadEverything(
         referenceData, server, offline
       );
 
@@ -246,7 +246,7 @@
       }
 
       setProgress(85, "Generating Excel file...");
-      const buffer = await window.excel.buildExcel(records, items, banners, bannerListRows);
+      const buffer = await window.excel.buildExcel(records, bannerListRows);
 
       resultBuffer = buffer;
       const baseName = currentFile.name.replace(/\.[^.]+$/, "");
