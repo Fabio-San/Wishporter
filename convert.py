@@ -1077,7 +1077,20 @@ def parse_source_file(file_path):
     # The HoYo export is newest-first. Within the same second, the lower
     # "No." is the newer pull, so the chronological order is time ascending,
     # No. descending.
-    all_records.sort(key=lambda row: (row["dt"], row["no"]))
+    # The HoYo export is sorted by time, but the "No." column convention varies:
+    # some exports have No. 1 = newest (descending), others No. 1 = oldest
+    # (ascending). Detect the convention and sort chronologically (oldest first).
+    if all_records:
+        first_no = all_records[0]["no"] if "no" in all_records[0] else None
+        # Find the record with the highest No. and its time
+        max_no_rec = max(all_records, key=lambda r: r["no"])
+        min_no_rec = min(all_records, key=lambda r: r["no"])
+        if min_no_rec["dt"] > max_no_rec["dt"]:
+            # No. 1 is newest -> descending No. within same timestamp
+            all_records.sort(key=lambda row: (row["dt"], -row["no"]))
+        else:
+            # No. 1 is oldest -> ascending No. within same timestamp
+            all_records.sort(key=lambda row: (row["dt"], row["no"]))
     return all_records
 
 
@@ -1097,17 +1110,15 @@ def enrich_category(rows, banners, category):
     for row in rows:
         rarity = row["rarity"]
 
+        pity_4 += 1
         pity_5 += 1
         if rarity == 5:
             row["pity"] = pity_5
             pity_5 = 0
-            pity_4 = 0
         elif rarity == 4:
-            pity_4 += 1
             row["pity"] = pity_4
             pity_4 = 0
         else:
-            pity_4 += 1
             row["pity"] = 1
 
         if current_banner is None or current_banner["_end"] < row["dt"]:

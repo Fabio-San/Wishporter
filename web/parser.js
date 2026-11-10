@@ -706,9 +706,14 @@
 
     // The HoYo export is newest-first. Within the same second the lower "No."
     // is the newer pull, so chronological order is time ascending, No. descending.
+    // Detect No. convention: if No. 1 is the newest pull, sort descending
+    // within same timestamp; otherwise ascending.
+    const minNoRec = records.reduce((a, b) => (a.no < b.no ? a : b));
+    const maxNoRec = records.reduce((a, b) => (a.no > b.no ? a : b));
+    const desc = minNoRec.dt.getTime() > maxNoRec.dt.getTime();
     records.sort((a, b) => {
       if (a.dt.getTime() !== b.dt.getTime()) return a.dt.getTime() - b.dt.getTime();
-      return a.no - b.no;
+      return desc ? (b.no - a.no) : (a.no - b.no);
     });
 
     return records;

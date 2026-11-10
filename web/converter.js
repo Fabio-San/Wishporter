@@ -80,10 +80,11 @@
 
     for (const row of rows) {
       const rarity = row.rarity;
+      pity4 += 1;
       pity5 += 1;
-      if (rarity === 5) { row.pity = pity5; pity5 = 0; pity4 = 0; }
-      else if (rarity === 4) { pity4 += 1; row.pity = pity4; pity4 = 0; }
-      else { pity4 += 1; row.pity = 1; }
+      if (rarity === 5) { row.pity = pity5; pity5 = 0; }
+      else if (rarity === 4) { row.pity = pity4; pity4 = 0; }
+      else { row.pity = 1; }
 
       if (!currentBanner || currentBanner._end < row.dt) {
         let found = null;
