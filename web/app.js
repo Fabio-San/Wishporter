@@ -199,6 +199,7 @@
         console.log("Loaded existing Paimon backup with", Object.keys(data).length, "keys");
       } else {
         existingBackupData = null;
+        showError(window.i18n.t("web_backup_invalid"));
       }
     } catch (err) {
       existingBackupData = null;

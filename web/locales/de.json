@@ -116,6 +116,6 @@
   "web_json_note": "JSON stellt die 50/50-Statistiken und Chronicled Wish wieder her. Import in Paimon.moe: Einstellungen -> Daten exportieren und importieren -> Daten importieren (ersetzt bestehende Daten; erst sichern).",
   "web_json_failed": "JSON-Export nicht verfügbar. Zuerst eine Datei konvertieren.",
   "web_backup_file": "Bestehendes Paimon.moe-Backup (.json, optional)",
-  "web_backup_hint": "Führt Server/ar/wl/Collectables in die JSON-Ausgabe zusammen.",
+  "web_backup_hint": "Ohne diese Datei werden Server/ar/wl/Collectables beim Import zurückgesetzt.",
   "web_backup_invalid": "Ungültiges Paimon.moe-Backup-JSON."
 }
