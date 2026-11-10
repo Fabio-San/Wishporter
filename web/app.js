@@ -354,11 +354,6 @@
   // ── Theme ──
   themeToggle.addEventListener("click", toggleTheme);
 
-  // ── Service worker ──
-  if ("serviceWorker" in navigator) {
-    navigator.serviceWorker.register("sw.js").catch(() => {});
-  }
-
   // ── Init ──
   async function init() {
     initTheme();

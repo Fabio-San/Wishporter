@@ -6,8 +6,55 @@
   <title>Wishporter — Genshin Impact wish history → Paimon.moe converter</title>
   <meta name="description" content="Convert your Genshin Impact wish history export into a Paimon.moe import file. Free, open source, privacy-first.">
   <link rel="icon" href="assets/icon.svg" type="image/svg+xml">
-  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="style.css?v=1.0.6">
   <link rel="manifest" href="manifest.json">
+  <script>
+    // Always load the latest version: clear stale caches and reload once when
+    // a new release is detected, instead of serving an outdated page.
+    (function () {
+      var VERSION = "1.0.6";
+      try {
+        var prev = localStorage.getItem("wp_version");
+        localStorage.setItem("wp_version", VERSION);
+        if (prev && prev !== VERSION && !sessionStorage.getItem("wp_reloaded_" + VERSION)) {
+          sessionStorage.setItem("wp_reloaded_" + VERSION, "1");
+          if ("serviceWorker" in navigator) {
+            navigator.serviceWorker.getRegistrations().then(function (rs) {
+              rs.forEach(function (r) { r.unregister(); });
+            });
+          }
+          if (window.caches) {
+            caches.keys().then(function (ks) { ks.forEach(function (k) { caches.delete(k); }); });
+          }
+          window.location.reload();
+        }
+      } catch (e) {}
+    })();
+
+    // Service worker: auto-update and reload when a new version activates.
+    if ("serviceWorker" in navigator) {
+      window.addEventListener("load", function () {
+        navigator.serviceWorker.register("sw.js?v=1.0.6").then(function (reg) {
+          try { reg.update(); } catch (e) {}
+          reg.addEventListener("updatefound", function () {
+            var nw = reg.installing;
+            if (!nw) return;
+            nw.addEventListener("statechange", function () {
+              if (nw.state === "installed" && navigator.serviceWorker.controller) {
+                try { nw.postMessage({ type: "SKIP_WAITING" }); } catch (e) {}
+              }
+            });
+          });
+        }).catch(function () {});
+      });
+      navigator.serviceWorker.addEventListener("controllerchange", function () {
+        if (!sessionStorage.getItem("wp_reloaded_ctrl")) {
+          sessionStorage.setItem("wp_reloaded_ctrl", "1");
+          window.location.reload();
+        }
+      });
+    }
+  </script>
 </head>
 <body>
   <header>
@@ -128,12 +175,12 @@
   <script src="https://cdn.jsdelivr.net/npm/exceljs@4.4.0/dist/exceljs.min.js"></script>
 
   <!-- App -->
-  <script src="i18n.js"></script>
-  <script src="cache.js"></script>
-  <script src="parser.js"></script>
-  <script src="converter.js"></script>
-  <script src="backup.js"></script>
-  <script src="excel.js"></script>
-  <script src="app.js"></script>
+  <script src="i18n.js?v=1.0.6"></script>
+  <script src="cache.js?v=1.0.6"></script>
+  <script src="parser.js?v=1.0.6"></script>
+  <script src="converter.js?v=1.0.6"></script>
+  <script src="backup.js?v=1.0.6"></script>
+  <script src="excel.js?v=1.0.6"></script>
+  <script src="app.js?v=1.0.6"></script>
 </body>
 </html>
