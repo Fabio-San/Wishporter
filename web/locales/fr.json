@@ -113,5 +113,6 @@
   "web_exceljs_failed": "Impossible de charger la bibliothèque ExcelJS. Vérifiez votre connexion et rechargez la page.",
   "web_summary_line": "{sheet} : {count} tirages",
   "web_download_json": "Télécharger *_paimonmoe.json (sauvegarde Paimon.moe)",
-  "web_json_note": "Le JSON restaure les stats 50/50 et le Chronicled Wish. Importer dans Paimon.moe : Paramètres -> Exporter et importer les données -> Importer les données (remplace les données existantes ; sauvegardez d'abord)."
+  "web_json_note": "Le JSON restaure les stats 50/50 et le Chronicled Wish. Importer dans Paimon.moe : Paramètres -> Exporter et importer les données -> Importer les données (remplace les données existantes ; sauvegardez d'abord).",
+  "web_json_failed": "L'export JSON n'est pas disponible. Convertissez d'abord un fichier."
 }

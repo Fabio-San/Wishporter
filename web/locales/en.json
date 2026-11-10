@@ -113,5 +113,6 @@
   "web_exceljs_failed": "ExcelJS library failed to load. Please check your internet connection and refresh.",
   "web_summary_line": "{sheet}: {count} pulls",
   "web_download_json": "Download *_paimonmoe.json (Paimon.moe backup)",
-  "web_json_note": "JSON restores 50/50 stats and Chronicled Wish. Import via Paimon.moe: Settings -> Export & Import Data -> Import Data (replaces existing data; back up first)."
+  "web_json_note": "JSON restores 50/50 stats and Chronicled Wish. Import via Paimon.moe: Settings -> Export & Import Data -> Import Data (replaces existing data; back up first).",
+  "web_json_failed": "JSON export is not available. Convert a file first."
 }

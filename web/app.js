@@ -270,12 +270,16 @@
 
       // Paimon.moe localforage backup JSON
       try {
+        if (typeof window.backup === "undefined" || !window.backup.buildJson) {
+          throw new Error("Backup module not loaded.");
+        }
         const jsonText = window.backup.buildJson(records, itemIds, uid);
         resultJsonBuffer = new TextEncoder().encode(jsonText);
         resultJsonFileName = baseName + "_paimonmoe.json";
       } catch (e) {
         console.error("JSON build failed", e);
         resultJsonBuffer = null;
+        showError("JSON export failed: " + (e.message || e));
       }
 
       // Summary
@@ -319,7 +323,10 @@
   });
 
   downloadJsonBtn.addEventListener("click", () => {
-    if (!resultJsonBuffer) return;
+    if (!resultJsonBuffer) {
+      showError(window.i18n.t("web_json_failed"));
+      return;
+    }
     const blob = new Blob([resultJsonBuffer], { type: "application/json" });
     const url = URL.createObjectURL(blob);
     const a = document.createElement("a");

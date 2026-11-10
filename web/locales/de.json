@@ -113,5 +113,6 @@
   "web_exceljs_failed": "ExcelJS-Bibliothek konnte nicht geladen werden. Prüfe deine Internetverbindung und lade die Seite neu.",
   "web_summary_line": "{sheet}: {count} Wünsche",
   "web_download_json": "Download *_paimonmoe.json (Paimon.moe-Backup)",
-  "web_json_note": "JSON stellt die 50/50-Statistiken und Chronicled Wish wieder her. Import in Paimon.moe: Einstellungen -> Daten exportieren und importieren -> Daten importieren (ersetzt bestehende Daten; erst sichern)."
+  "web_json_note": "JSON stellt die 50/50-Statistiken und Chronicled Wish wieder her. Import in Paimon.moe: Einstellungen -> Daten exportieren und importieren -> Daten importieren (ersetzt bestehende Daten; erst sichern).",
+  "web_json_failed": "JSON-Export nicht verfügbar. Zuerst eine Datei konvertieren."
 }
