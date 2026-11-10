@@ -114,5 +114,8 @@
   "web_summary_line": "{sheet}: {count} молитв",
   "web_download_json": "Скачать *_paimonmoe.json (резервная копия Paimon.moe)",
   "web_json_note": "JSON восстанавливает статистику 50/50 и Chronicled Wish. Импорт в Paimon.moe: Настройки -> Экспорт и импорт данных -> Импорт данных (заменяет существующие данные; сначала сделайте резервную копию).",
-  "web_json_failed": "Экспорт JSON недоступен. Сначала конвертируйте файл."
+  "web_json_failed": "Экспорт JSON недоступен. Сначала конвертируйте файл.",
+  "web_backup_file": "Существующий бэкап Paimon.moe (.json, необязательно)",
+  "web_backup_hint": "Объединяет сервер/ar/wl/collectables в выходной JSON.",
+  "web_backup_invalid": "Некорректный JSON-бэкап Paimon.moe."
 }

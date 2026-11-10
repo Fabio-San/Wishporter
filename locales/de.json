@@ -76,5 +76,6 @@
   "reference_prompt_offline": "Falls du einen hast, ziehe ihn hierher; sonst drücke Enter, um mit generischen Bannernamen fortzufahren:",
   "reference_accepted": "[i] Verwende Paimon.moe-Export: {file}",
   "json_written": "Paimon.moe-Backup geschrieben: {file}",
-  "import_note_json": "JSON in Paimon.moe importieren: Einstellungen -> Daten exportieren und importieren -> Daten importieren. Ersetzt die aktuell gespeicherten Daten in Paimon.moe: erst eine Sicherung erstellen."
+  "import_note_json": "JSON in Paimon.moe importieren: Einstellungen -> Daten exportieren und importieren -> Daten importieren. Ersetzt die aktuell gespeicherten Daten in Paimon.moe: erst eine Sicherung erstellen.",
+  "backup_merged": "Mit bestehendem Paimon.moe-Backup zusammengeführt: {file} (Server/ar/wl/Collectables erhalten)."
 }

@@ -1343,8 +1343,11 @@ def compute_rates(rows):
     return off_5, off_4, guaranteed_5, guaranteed_4, has_featured_5, has_featured_4
 
 
-def build_paimon_json(by_category, item_ids, uid=None, output_path=None):
-    data = {}
+def build_paimon_json(by_category, item_ids, uid=None, output_path=None, existing_data=None):
+    if isinstance(existing_data, dict):
+        data = dict(existing_data)
+    else:
+        data = {}
     for category, rows in (by_category or {}).items():
         if category not in CATEGORY_TO_STORAGE_KEY or not rows:
             continue
@@ -1542,6 +1545,7 @@ def parse_args(argv):
     parser.add_argument("--lang", choices=i18n.available_languages(), help="UI language")
     parser.add_argument("--yes", action="store_true", help="overwrite without asking and avoid prompts")
     parser.add_argument("--debug", action="store_true", help="show full error details")
+    parser.add_argument("--paimon-backup", help="existing Paimon.moe backup JSON to merge into (preserves server/ar/wl/etc.)")
     parser.add_argument("--debug-rows", action="store_true", help="print the first rows of each sheet for diagnosis")
     parser.add_argument("--version", action="store_true", help="show version and exit")
     return parser.parse_args(argv)
@@ -1636,8 +1640,34 @@ def main(argv=None):
         print(i18n.t("writing"))
         by_category = build_paimon_excel(records, items_db, banners, banner_list_rows, output)
 
+        # Optional merge with an existing Paimon.moe backup JSON so that
+        # server/ar/wl/collectables/todos are preserved instead of wiped.
+        existing_data = None
+        backup_path = args.paimon_backup
+        if not backup_path:
+            for candidate in sorted(Path.cwd().iterdir()):
+                if not candidate.is_file() or candidate.suffix.lower() != ".json":
+                    continue
+                if candidate.resolve() == output.with_suffix(".json").resolve():
+                    continue
+                try:
+                    candidate_data = json.loads(candidate.read_text(encoding="utf-8"))
+                except (OSError, ValueError):
+                    continue
+                if isinstance(candidate_data, dict) and any(
+                    str(key).startswith("wish-counter-") for key in candidate_data
+                ):
+                    backup_path = candidate
+                    break
+        if backup_path:
+            try:
+                existing_data = json.loads(Path(backup_path).read_text(encoding="utf-8"))
+                print(i18n.t("backup_merged", file=str(backup_path)))
+            except (OSError, ValueError) as exc:
+                print(i18n.t("error", error=exc))
+
         json_output = output.with_suffix(".json")
-        build_paimon_json(by_category, item_ids, uid=uid, output_path=json_output)
+        build_paimon_json(by_category, item_ids, uid=uid, output_path=json_output, existing_data=existing_data)
 
         summary = ", ".join(
             f"{CATEGORY_TO_SHEET[category]} {len(by_category.get(category, []))}"

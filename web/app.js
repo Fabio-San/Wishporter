@@ -13,6 +13,7 @@
   let resultFileName = null;
   let resultJsonBuffer = null;
   let resultJsonFileName = null;
+  let existingBackupData = null;
 
   // ── DOM refs ──
   const loadingOverlay = $("#loadingOverlay");
@@ -25,6 +26,7 @@
   const serverSelect = $("#serverSelect");
   const langSelect = $("#langSelect");
   const offlineMode = $("#offlineMode");
+  const backupFile = $("#backupFile");
   const convertBtn = $("#convertBtn");
   const progress = $("#progress");
   const progressFill = $("#progressFill");
@@ -186,6 +188,23 @@
   fileInput.addEventListener("change", (e) => {
     if (e.target.files.length) handleFile(e.target.files[0]);
   });
+  backupFile.addEventListener("change", async (e) => {
+    const f = e.target.files && e.target.files[0];
+    if (!f) { existingBackupData = null; return; }
+    try {
+      const text = await f.text();
+      const data = JSON.parse(text);
+      if (data && typeof data === "object") {
+        existingBackupData = data;
+        console.log("Loaded existing Paimon backup with", Object.keys(data).length, "keys");
+      } else {
+        existingBackupData = null;
+      }
+    } catch (err) {
+      existingBackupData = null;
+      showError(window.i18n.t("web_backup_invalid"));
+    }
+  });
   dropZone.addEventListener("dragover", (e) => {
     e.preventDefault();
     dropZone.classList.add("drag-over");
@@ -273,7 +292,7 @@
         if (typeof window.backup === "undefined" || !window.backup.buildJson) {
           throw new Error("Backup module not loaded.");
         }
-        const jsonText = window.backup.buildJson(records, itemIds, uid);
+        const jsonText = window.backup.buildJson(records, itemIds, uid, existingBackupData);
         resultJsonBuffer = new TextEncoder().encode(jsonText);
         resultJsonFileName = baseName + "_paimonmoe.json";
       } catch (e) {

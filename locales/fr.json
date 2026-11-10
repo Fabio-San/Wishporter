@@ -76,5 +76,6 @@
   "reference_prompt_offline": "Si tu en as un, glisse-le ici ; sinon appuie sur Entrée pour continuer avec des noms de bannières génériques :",
   "reference_accepted": "[i] Utilisation de l'export Paimon.moe : {file}",
   "json_written": "Sauvegarde Paimon.moe écrite : {file}",
-  "import_note_json": "Importez le JSON dans Paimon.moe : Paramètres -> Exporter et importer les données -> Importer les données. Cela remplace les données actuellement sauvegardées dans Paimon.moe : faites d'abord une sauvegarde."
+  "import_note_json": "Importez le JSON dans Paimon.moe : Paramètres -> Exporter et importer les données -> Importer les données. Cela remplace les données actuellement sauvegardées dans Paimon.moe : faites d'abord une sauvegarde.",
+  "backup_merged": "Fusionné avec la sauvegarde Paimon.moe existante : {file} (serveur/ar/wl/collectables préservés)."
 }

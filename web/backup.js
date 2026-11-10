@@ -81,14 +81,14 @@
     };
   }
 
-  function buildJson(records, itemIds, uid) {
+  function buildJson(records, itemIds, uid, existingData) {
     const byCategory = {};
     for (const row of records) {
       if (!byCategory[row.category]) byCategory[row.category] = [];
       byCategory[row.category].push(row);
     }
 
-    const data = {};
+    const data = (existingData && typeof existingData === "object") ? Object.assign({}, existingData) : {};
     for (const [category, rows] of Object.entries(byCategory)) {
       if (!STORAGE_KEY[category] || !rows.length) continue;
 
