@@ -74,5 +74,7 @@
   "reference_missing": "Kein Paimon.moe-Export in diesem Ordner gefunden.",
   "reference_prompt": "Falls du einen hast, ziehe ihn hierher; sonst drücke Enter, um die Bannerdaten jetzt herunterzuladen (einmalig):",
   "reference_prompt_offline": "Falls du einen hast, ziehe ihn hierher; sonst drücke Enter, um mit generischen Bannernamen fortzufahren:",
-  "reference_accepted": "[i] Verwende Paimon.moe-Export: {file}"
+  "reference_accepted": "[i] Verwende Paimon.moe-Export: {file}",
+  "json_written": "Paimon.moe-Backup geschrieben: {file}",
+  "import_note_json": "JSON in Paimon.moe importieren: Einstellungen -> Daten exportieren und importieren -> Daten importieren. Ersetzt die aktuell gespeicherten Daten in Paimon.moe: erst eine Sicherung erstellen."
 }

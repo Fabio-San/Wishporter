@@ -11,6 +11,8 @@
   let records = null;
   let resultBuffer = null;
   let resultFileName = null;
+  let resultJsonBuffer = null;
+  let resultJsonFileName = null;
 
   // ── DOM refs ──
   const loadingOverlay = $("#loadingOverlay");
@@ -30,6 +32,7 @@
   const result = $("#result");
   const resultSummary = $("#resultSummary");
   const downloadBtn = $("#downloadBtn");
+  const downloadJsonBtn = $("#downloadJsonBtn");
   const errorBox = $("#errorBox");
   const errorText = $("#errorText");
   const dataStatus = $("#dataStatus");
@@ -217,7 +220,7 @@
       // Check if user provided a reference file (not in this UI, but for future)
       const offline = offlineMode.checked;
 
-      const { items, banners, bannerListRows, notes } = await window.converter.loadEverything(
+      const { items, itemIds, banners, bannerListRows, notes } = await window.converter.loadEverything(
         referenceData, server, offline
       );
 
@@ -265,6 +268,16 @@
       const baseName = currentFile.name.replace(/\.[^.]+$/, "");
       resultFileName = baseName + "_paimonmoe.xlsx";
 
+      // Paimon.moe localforage backup JSON
+      try {
+        const jsonText = window.backup.buildJson(records, itemIds, uid);
+        resultJsonBuffer = new TextEncoder().encode(jsonText);
+        resultJsonFileName = baseName + "_paimonmoe.json";
+      } catch (e) {
+        console.error("JSON build failed", e);
+        resultJsonBuffer = null;
+      }
+
       // Summary
       resultSummary.innerHTML = "";
       for (const cat of ["characters", "weapons", "standard", "beginners"]) {
@@ -299,6 +312,19 @@
     const a = document.createElement("a");
     a.href = url;
     a.download = resultFileName;
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    URL.revokeObjectURL(url);
+  });
+
+  downloadJsonBtn.addEventListener("click", () => {
+    if (!resultJsonBuffer) return;
+    const blob = new Blob([resultJsonBuffer], { type: "application/json" });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = resultJsonFileName;
     document.body.appendChild(a);
     a.click();
     document.body.removeChild(a);

@@ -111,5 +111,7 @@
   "web_cache_cleared_alert": "Cache svuotata. I dati verranno riscaricati alla prossima conversione.",
   "web_cache_clear_failed": "Impossibile svuotare la cache: {error}",
   "web_exceljs_failed": "Impossibile caricare la libreria ExcelJS. Controlla la connessione e ricarica la pagina.",
-  "web_summary_line": "{sheet}: {count} pull"
+  "web_summary_line": "{sheet}: {count} pull",
+  "web_download_json": "Scarica *_paimonmoe.json (backup Paimon.moe)",
+  "web_json_note": "Il JSON ripristina le statistiche 50/50 e il Chronicled Wish. Importa in Paimon.moe: Impostazioni -> Esporta e importa dati -> Importa dati (sostituisce i dati esistenti; fai prima un backup)."
 }

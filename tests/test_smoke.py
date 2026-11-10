@@ -28,7 +28,7 @@ ROWS = [
     (6, "700000001", "Novice Wishes", "Test Four Star", "2024-01-08 12:00:00"),
     (11, "700000001", "Character Event Wish-2", "Test Four Star", "2024-01-09 12:00:00"),
 ]
-SHEETS = ["Character Event", "Weapon Event", "Standard", "Beginners' Wish"]
+SHEETS = ["Character Event", "Weapon Event", "Standard", "Beginners' Wish", "Chronicled Wish"]
 
 
 def write_xlsx(path):

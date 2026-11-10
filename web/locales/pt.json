@@ -111,5 +111,7 @@
   "web_cache_cleared_alert": "Cache limpa. Os dados serão transferidos novamente na próxima conversão.",
   "web_cache_clear_failed": "Não foi possível limpar a cache: {error}",
   "web_exceljs_failed": "Não foi possível carregar a biblioteca ExcelJS. Verifica a tua ligação à Internet e recarrega a página.",
-  "web_summary_line": "{sheet}: {count} pulls"
+  "web_summary_line": "{sheet}: {count} pulls",
+  "web_download_json": "Transferir *_paimonmoe.json (backup Paimon.moe)",
+  "web_json_note": "O JSON restaura as estatísticas 50/50 e o Chronicled Wish. Importar no Paimon.moe: Definições -> Exportar e importar dados -> Importar dados (substitui os dados existentes; faça primeiro uma cópia)."
 }

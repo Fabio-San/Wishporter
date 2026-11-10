@@ -74,5 +74,7 @@
   "reference_missing": "Nenhum export do Paimon.moe encontrado nesta pasta.",
   "reference_prompt": "Se você tiver um, arraste-o aqui; caso contrário, pressione Enter para baixar os dados de banners agora (uma única vez):",
   "reference_prompt_offline": "Se você tiver um, arraste-o aqui; caso contrário, pressione Enter para continuar com nomes genéricos de banners:",
-  "reference_accepted": "[i] Usando export do Paimon.moe: {file}"
+  "reference_accepted": "[i] Usando export do Paimon.moe: {file}",
+  "json_written": "Backup do Paimon.moe escrito: {file}",
+  "import_note_json": "Importe o JSON no Paimon.moe: Definições -> Exportar e importar dados -> Importar dados. Substitui os dados atualmente guardados no Paimon.moe: faça primeiro uma cópia de segurança."
 }

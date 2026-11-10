@@ -14,7 +14,7 @@
     <div class="header-inner">
       <img src="assets/icon.svg" alt="Wishporter" class="logo" width="32" height="32">
       <div>
-        <h1>Wishporter <span class="version" id="appVersion">v1.0.5</span></h1>
+        <h1>Wishporter <span class="version" id="appVersion">v1.0.6</span></h1>
         <p class="tagline">Genshin Impact wish history → Paimon.moe converter</p>
       </div>
       <button id="themeToggle" class="theme-toggle" aria-label="Toggle dark mode" title="Toggle theme">
@@ -91,7 +91,9 @@
       <h2 data-i18n="web_result">Result</h2>
       <ul id="resultSummary" class="summary"></ul>
       <button id="downloadBtn" class="btn-secondary" data-i18n="web_download">Download *_paimonmoe.xlsx</button>
+      <button id="downloadJsonBtn" class="btn-secondary" data-i18n="web_download_json">Download *_paimonmoe.json (Paimon.moe backup)</button>
       <p class="hint" data-i18n="web_paimon_note">Paimon.moe reads columns A (Type), B (Name), C (Time) and I (Part).</p>
+      <p class="hint" data-i18n="web_json_note">JSON restores 50/50 stats and Chronicled Wish. Import via Paimon.moe: Settings → Export & Import Data → Import Data (replaces existing data; back up first).</p>
     </section>
 
     <!-- Error -->
@@ -130,6 +132,7 @@
   <script src="cache.js"></script>
   <script src="parser.js"></script>
   <script src="converter.js"></script>
+  <script src="backup.js"></script>
   <script src="excel.js"></script>
   <script src="app.js"></script>
 </body>

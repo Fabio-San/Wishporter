@@ -4,6 +4,25 @@ All notable changes to this project are documented here.
 The format follows [Keep a Changelog](https://keepachangelog.com/) and the
 project adheres to [Semantic Versioning](https://semver.org/).
 
+## [1.0.6] - 2026-11-10
+
+### Added
+
+- **Chronicled Wish** support: `normalize_wish_type` now recognizes Chronicled
+  Wish exports in 7 languages; a dedicated `Chronicled Wish` sheet is written to
+  the Excel output and enriched with pity/roll/group data.
+- **Paimon.moe backup JSON** (`*_paimonmoe.json`): full localforage-compatible
+  backup that restores the 50/50 win/loss statistic and Chronicled Wish. Import
+  via Paimon.moe Settings → Export & Import Data → Import Data.
+- Web UI: download button for the JSON backup plus import instructions, and
+  version badge next to "Wishporter" in the header.
+- Web UI fully localized into IT/FR/DE/ES/PT/RU (dynamic strings included).
+
+### Fixed
+
+- Web localization: `formatHint`, progress, errors, alerts and summary lines now
+  use translated strings; `<html lang>` is set on language change.
+
 ## [1.0.5] - 2026-11-07
 
 ### Fixed

@@ -83,7 +83,7 @@
     wb.properties = { creator: "Wishporter" };
 
     const sheetMap = window.converter.CATEGORY_TO_SHEET;
-    for (const category of ["characters", "weapons", "standard", "beginners"]) {
+    for (const category of ["characters", "weapons", "standard", "beginners", "chronicled"]) {
       const ws = wb.addWorksheet(sheetMap[category]);
       writeHistorySheet(ws, byCategory[category] || []);
     }

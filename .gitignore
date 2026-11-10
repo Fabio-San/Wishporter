@@ -9,6 +9,7 @@
 
 # HoYo Excel exports and Paimon.moe reference exports
 paimonmoe_wish_history*
+paimon-moe-local-data*.json
 work/
 
 # --- Local runtime ---

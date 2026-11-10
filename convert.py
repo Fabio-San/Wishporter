@@ -68,13 +68,32 @@ SERVER_BY_UID_PREFIX = {
     "9": "Asia",
 }
 
-DATA_SHEETS = ["Character Event", "Weapon Event", "Standard", "Beginners' Wish"]
+DATA_SHEETS = ["Character Event", "Weapon Event", "Standard", "Beginners' Wish", "Chronicled Wish"]
 CATEGORY_TO_SHEET = {
     "characters": "Character Event",
     "weapons": "Weapon Event",
     "standard": "Standard",
     "beginners": "Beginners' Wish",
+    "chronicled": "Chronicled Wish",
 }
+
+# Paimon.moe localforage keys for wish history (default "Main" account).
+CATEGORY_TO_STORAGE_KEY = {
+    "characters": "wish-counter-character-event",
+    "weapons": "wish-counter-weapon-event",
+    "standard": "wish-counter-standard",
+    "beginners": "wish-counter-beginners",
+    "chronicled": "wish-counter-chronicled",
+}
+CATEGORY_TO_GACHA_TYPE = {
+    "characters": 301,
+    "weapons": 302,
+    "standard": 200,
+    "beginners": 100,
+    "chronicled": 500,
+}
+# Categories where Paimon.moe computes the 50/50 win/loss statistic.
+RATE_CATEGORIES = ("characters", "weapons", "chronicled")
 
 # Small built-in item database. The full database is downloaded from Paimon.moe
 # on the first online run and cached locally.
@@ -206,6 +225,13 @@ def normalize_wish_type(raw_type):
     )
     if any(word in text for word in beginner_words):
         return "beginners", False
+    chronicled_words = (
+        "chronicled", "chronicle", "cronache", "cronaca", "chronique",
+        "nostalgique", "segensreich", "recopilación", "recopilacion",
+        "registro", "registros", "хроник",
+    )
+    if any(word in text for word in chronicled_words):
+        return "chronicled", False
     raise ValueError(f"Unrecognized wish type: {raw_type!r}")
 
 
@@ -484,6 +510,29 @@ def parse_items_texts(texts):
     return items, errors
 
 
+def parse_item_ids(texts):
+    """Map item names to Paimon.moe ids (the keys of characters/weaponList)."""
+    ids = {}
+    for key, export_name in (("characters", "characters"), ("weapons", "weaponList")):
+        text = texts.get(key)
+        if not text:
+            continue
+        try:
+            data = parse_js_export(text, export_name)
+            for item_id, entry in data.items():
+                if isinstance(entry, dict) and entry.get("name"):
+                    ids[clean_item_name(entry["name"])] = str(item_id)
+        except Exception:
+            continue
+    return ids
+
+
+def slug_item_id(name):
+    """Best-effort Paimon.moe id from an item name (offline fallback)."""
+    text = clean_item_name(name).lower().replace("'", "").replace("\u2019", "")
+    return re.sub(r"[^a-z0-9]+", "_", text).strip("_")
+
+
 def prepare_remote_banners(banners, dual, server):
     diff = 8 - SERVER_OFFSETS[server]
     for category in ("beginners", "standard", "characters", "weapons", "chronicled"):
@@ -643,7 +692,7 @@ def make_generic_banners():
         "standard": [banner("Wanderlust Invocation")],
         "characters": [banner("Character Event Wish", "Character Event Wish 2")],
         "weapons": [banner("Epitome Invocation")],
-        "chronicled": [],
+        "chronicled": [banner("Chronicled Wish")],
     }
 
 
@@ -683,6 +732,7 @@ def find_reference_file(source_path, output_path):
 
 def load_everything(reference_path, server, offline, data_dir):
     items = dict(FALLBACK_ITEMS)
+    item_ids = {}
     banners = None
     banner_list_rows = None
     notes = []
@@ -704,6 +754,7 @@ def load_everything(reference_path, server, offline, data_dir):
     if texts:
         parsed_items, item_errors = parse_items_texts(texts)
         items.update(parsed_items)
+        item_ids.update(parse_item_ids(texts))
         for error in item_errors:
             notes.append(i18n.t("data_parse_failed", error=error))
 
@@ -726,14 +777,14 @@ def load_everything(reference_path, server, offline, data_dir):
         banners = make_generic_banners()
         banner_list_rows = [
             (name, format_datetime(start), format_datetime(end))
-            for category in ("beginners", "standard", "characters", "weapons")
+            for category in ("beginners", "standard", "characters", "weapons", "chronicled")
             for name, start, end in [
                 (banners[category][0]["name"], banners[category][0]["_start"], banners[category][0]["_end"])
             ]
         ]
         notes.append(i18n.t("generic_banners"))
 
-    return items, banners, banner_list_rows, notes
+    return items, item_ids, banners, banner_list_rows, notes
 
 
 # ---------------------------------------------------------------------------
@@ -1083,6 +1134,8 @@ def enrich_category(rows, banners, category):
         else:
             row["banner"] = current_banner["name"]
             row["part"] = ""
+        row["_featured"] = current_banner.get("featured") or []
+        row["_featured_rare"] = current_banner.get("featuredRare") or []
 
     return rows
 
@@ -1185,7 +1238,7 @@ def write_information_sheet(sheet):
     sheet.merge_cells("A1:B1")
 
 
-def build_paimon_excel(records, items_db, banners, banner_list_rows, output_path):
+def enrich_records(records, items_db, banners):
     unknown = []
     for row in records:
         item = items_db.get(row["item_name"])
@@ -1209,12 +1262,18 @@ def build_paimon_excel(records, items_db, banners, banner_list_rows, output_path
         enrich_category(category_rows, selected_banners, category)
         apply_stripes(category_rows)
 
+    return by_category
+
+
+def build_paimon_excel(records, items_db, banners, banner_list_rows, output_path):
+    by_category = enrich_records(records, items_db, banners)
+
     workbook = openpyxl.Workbook()
     workbook.remove(workbook.active)
     workbook.properties.creator = "Wishporter"
 
     sheets = {}
-    for category in ("characters", "weapons", "standard", "beginners"):
+    for category in ("characters", "weapons", "standard", "beginners", "chronicled"):
         sheet_name = CATEGORY_TO_SHEET[category]
         sheets[category] = workbook.create_sheet(title=sheet_name)
 
@@ -1228,6 +1287,129 @@ def build_paimon_excel(records, items_db, banners, banner_list_rows, output_path
     output_path.parent.mkdir(parents=True, exist_ok=True)
     workbook.save(output_path)
     return by_category
+
+
+def compute_rates(rows):
+    """Mirror Paimon.moe's 50/50 win/loss calculation for a single category."""
+    rate_up_5 = False
+    rate_up_4 = False
+    off_5 = {"win": 0, "lose": 0, "maxStreak": 0, "currentStreak": 0}
+    off_4 = {"win": 0, "lose": 0, "maxStreak": 0, "currentStreak": 0}
+    latest_5 = None
+    latest_4 = None
+    has_featured_5 = False
+    has_featured_4 = False
+
+    for row in rows:
+        if row["rarity"] == 5:
+            featured = row.get("_featured") or []
+            if featured:
+                has_featured_5 = True
+                guaranteed = rate_up_5
+                win = (row.get("_item_id") in featured)
+                rate_up_5 = not win
+                row["rate"] = int(bool(guaranteed)) + int(bool(win))
+                latest_5 = row["rate"]
+                if rate_up_5:
+                    off_5["lose"] += 1
+                    off_5["maxStreak"] = max(off_5["maxStreak"], off_5["currentStreak"])
+                    off_5["currentStreak"] = 0
+                elif not guaranteed:
+                    off_5["win"] += 1
+                    off_5["currentStreak"] += 1
+        elif row["rarity"] == 4:
+            featured = row.get("_featured_rare") or []
+            if featured:
+                has_featured_4 = True
+                guaranteed = rate_up_4
+                win = (row.get("_item_id") in featured)
+                rate_up_4 = not win
+                row["rate"] = int(bool(guaranteed)) + int(bool(win))
+                latest_4 = row["rate"]
+                if rate_up_4:
+                    off_4["lose"] += 1
+                    off_4["maxStreak"] = max(off_4["maxStreak"], off_4["currentStreak"])
+                    off_4["currentStreak"] = 0
+                elif not guaranteed:
+                    off_4["win"] += 1
+                    off_4["currentStreak"] += 1
+
+    off_5["maxStreak"] = max(off_5["maxStreak"], off_5["currentStreak"])
+    off_4["maxStreak"] = max(off_4["maxStreak"], off_4["currentStreak"])
+
+    guaranteed_5 = (latest_5 == 0) if latest_5 is not None else False
+    guaranteed_4 = (latest_4 == 0) if latest_4 is not None else False
+
+    return off_5, off_4, guaranteed_5, guaranteed_4, has_featured_5, has_featured_4
+
+
+def build_paimon_json(by_category, item_ids, uid=None, output_path=None):
+    data = {}
+    for category, rows in (by_category or {}).items():
+        if category not in CATEGORY_TO_STORAGE_KEY or not rows:
+            continue
+        for row in rows:
+            row["_item_id"] = item_ids.get(row["item_name"]) if item_ids else None
+            if not row["_item_id"]:
+                row["_item_id"] = slug_item_id(row["item_name"])
+
+        if category in RATE_CATEGORIES:
+            off_5, off_4, guaranteed_5, guaranteed_4, has_5, has_4 = compute_rates(rows)
+
+        pulls = []
+        legendary = 0
+        rare = 0
+        for row in rows:
+            legendary += 1
+            rare += 1
+            if row["rarity"] == 5:
+                legendary = 0
+            elif row["rarity"] == 4:
+                rare = 0
+
+            code = CATEGORY_TO_GACHA_TYPE[category]
+            if category == "characters" and row.get("wish2"):
+                code = 400
+
+            pull = {
+                "id": row["_item_id"],
+                "time": row["time"],
+                "type": str(row["type"]).lower(),
+                "pity": row["pity"],
+                "code": code,
+            }
+            if "rate" in row:
+                pull["rate"] = row["rate"]
+            pulls.append(pull)
+
+        counter = {
+            "total": len(rows),
+            "legendary": legendary,
+            "rare": rare,
+            "pulls": pulls,
+        }
+
+        if category in RATE_CATEGORIES:
+            if has_5 or has_4:
+                counter["guaranteed"] = {"legendary": bool(guaranteed_5), "rare": bool(guaranteed_4)}
+                counter["rateoff"] = {"legendary": off_5, "rare": off_4}
+
+        data[CATEGORY_TO_STORAGE_KEY[category]] = counter
+
+    if uid:
+        data["wish-uid"] = str(uid).strip()
+
+    data["wish-counter-setting"] = {"firstTime": False, "manualInput": False}
+    data["update-time"] = datetime.datetime.now().replace(microsecond=0).isoformat() + "Z"
+
+    if output_path:
+        output_path = Path(output_path)
+        output_path.parent.mkdir(parents=True, exist_ok=True)
+        output_path.write_text(
+            json.dumps(data, ensure_ascii=False, separators=(",", ":")),
+            encoding="utf-8",
+        )
+    return data
 
 
 # ---------------------------------------------------------------------------
@@ -1445,7 +1627,7 @@ def main(argv=None):
         if args.offline:
             print(i18n.t("offline_mode"))
 
-        items_db, banners, banner_list_rows, notes = load_everything(
+        items_db, item_ids, banners, banner_list_rows, notes = load_everything(
             reference_file, server, args.offline, data_dir
         )
         for note in notes:
@@ -1454,13 +1636,18 @@ def main(argv=None):
         print(i18n.t("writing"))
         by_category = build_paimon_excel(records, items_db, banners, banner_list_rows, output)
 
+        json_output = output.with_suffix(".json")
+        build_paimon_json(by_category, item_ids, uid=uid, output_path=json_output)
+
         summary = ", ".join(
             f"{CATEGORY_TO_SHEET[category]} {len(by_category.get(category, []))}"
-            for category in ("characters", "weapons", "standard", "beginners")
+            for category in ("characters", "weapons", "standard", "beginners", "chronicled")
         )
         print(i18n.t("exported", summary=summary))
         print(i18n.t("success", file=str(output)))
+        print(i18n.t("json_written", file=str(json_output)))
         print(i18n.t("import_note"))
+        print(i18n.t("import_note_json"))
         return 0
 
     except KeyboardInterrupt:

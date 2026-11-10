@@ -6,11 +6,12 @@ community feedback; open an issue if you want to push a specific item.
 ## v1.0 — current release
 
 - HoYo Excel/CSV export (columns `No.`, `UID`, `Wish type`, `Wish award`, `Wish time`)
-- Character Event, Weapon Event, Standard and Beginners' Wish
+- Character Event, Weapon Event, Standard, Beginners' Wish and **Chronicled Wish**
 - Banner names from Paimon.moe, including dual banners (`Wish 2`)
 - Windows and Linux launchers with dependency checks and local `.venv`
 - UI in English, Italian, French, German, Spanish, Portuguese and Russian
 - Paimon.moe metadata cache, offline mode and `--reference` fallback
+- Paimon.moe backup JSON export (full restore incl. 50/50 stats and Chronicled Wish)
 
 ## v1.1 — more input formats
 

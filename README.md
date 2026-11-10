@@ -165,14 +165,33 @@ Paimon.moe reads columns **A (Type)**, **B (Name)**, **C (Time)** and
 
 ## Import into Paimon.moe
 
+### Excel (`.xlsx`) — append only
+
 1. Open [paimon.moe](https://paimon.moe) and go to **Wish History**.
-2. Choose **Import** and select the generated `.xlsx` file.
+2. Choose **Import** and select the generated `.xlsx` file (type **Paimon.moe**).
 3. Check the counters and save.
 
 > **Important:** Paimon.moe merges imports instead of replacing them. It only
 > adds pulls newer than your newest and older than your oldest existing pull.
 > For a complete restore, clear your current Paimon.moe wish data first (export
 > a backup if you need it), then import.
+>
+> The Excel route does **not** restore the 50/50 win/loss statistic and does
+> not include the **Chronicled Wish** banner.
+
+### JSON backup (`.json`) — full restore, two clicks
+
+Wishporter also writes a `*_paimonmoe.json` file next to the Excel file. It is
+a full Paimon.moe backup that you can import in two clicks:
+
+1. In Paimon.moe, open **Settings → Export & Import Data → Download Data**
+   (make a backup first).
+2. Open **Settings → Export & Import Data → Import Data**, select the
+   `*_paimonmoe.json` file and confirm.
+
+The JSON restores **everything**, including the 50/50 win/loss statistic and the
+**Chronicled Wish** banner. It replaces the data currently saved in Paimon.moe,
+so export a backup first.
 
 ## Languages
 

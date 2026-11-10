@@ -68,6 +68,7 @@
     weapons: "Weapon Event",
     standard: "Standard",
     beginners: "Beginners' Wish",
+    chronicled: "Chronicled Wish",
   };
 
   // ── Pity / banner / roll / group enrichment ───────────────────────
@@ -116,6 +117,8 @@
         row.banner = currentBanner.name;
         row.part = "";
       }
+      row._featured = (currentBanner.featured || currentBanner._featured || []).slice();
+      row._featured_rare = (currentBanner.featuredRare || currentBanner._featured_rare || []).slice();
     }
   }
 
@@ -140,6 +143,7 @@
   // ── Load everything ───────────────────────────────────────────────
   async function loadEverything(referenceData, server, offline) {
     const items = { ...FALLBACK_ITEMS };
+    const itemIds = {};
     let banners = null;
     let bannerListRows = null;
     const notes = [];
@@ -168,8 +172,9 @@
     notes.push(...dataNotes);
 
     if (Object.keys(texts).length > 0) {
-      const { items: parsedItems, errors: itemErrors } = window.parser.parseItemsTexts(texts);
+      const { items: parsedItems, itemIds: parsedIds, errors: itemErrors } = window.parser.parseItemsTexts(texts);
       Object.assign(items, parsedItems);
+      Object.assign(itemIds, parsedIds);
       for (const error of itemErrors) notes.push("data_parse_failed:" + error);
 
       try {
@@ -193,7 +198,7 @@
       notes.push("generic_banners");
     }
 
-    return { items, banners, bannerListRows, notes };
+    return { items, itemIds, banners, bannerListRows, notes };
   }
 
   window.converter = {

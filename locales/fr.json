@@ -74,5 +74,7 @@
   "reference_missing": "Aucun export Paimon.moe trouvé dans ce dossier.",
   "reference_prompt": "Si tu en as un, glisse-le ici ; sinon appuie sur Entrée pour télécharger les données de bannières maintenant (une seule fois) :",
   "reference_prompt_offline": "Si tu en as un, glisse-le ici ; sinon appuie sur Entrée pour continuer avec des noms de bannières génériques :",
-  "reference_accepted": "[i] Utilisation de l'export Paimon.moe : {file}"
+  "reference_accepted": "[i] Utilisation de l'export Paimon.moe : {file}",
+  "json_written": "Sauvegarde Paimon.moe écrite : {file}",
+  "import_note_json": "Importez le JSON dans Paimon.moe : Paramètres -> Exporter et importer les données -> Importer les données. Cela remplace les données actuellement sauvegardées dans Paimon.moe : faites d'abord une sauvegarde."
 }

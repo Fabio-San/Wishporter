@@ -111,5 +111,7 @@
   "web_cache_cleared_alert": "Кэш очищен. Данные будут загружены заново при следующей конвертации.",
   "web_cache_clear_failed": "Не удалось очистить кэш: {error}",
   "web_exceljs_failed": "Не удалось загрузить библиотеку ExcelJS. Проверьте подключение к Интернету и перезагрузите страницу.",
-  "web_summary_line": "{sheet}: {count} молитв"
+  "web_summary_line": "{sheet}: {count} молитв",
+  "web_download_json": "Скачать *_paimonmoe.json (резервная копия Paimon.moe)",
+  "web_json_note": "JSON восстанавливает статистику 50/50 и Chronicled Wish. Импорт в Paimon.moe: Настройки -> Экспорт и импорт данных -> Импорт данных (заменяет существующие данные; сначала сделайте резервную копию)."
 }

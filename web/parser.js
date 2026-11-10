@@ -109,6 +109,15 @@
       return { category: "beginners", wish2: false };
     }
 
+    const chronicledWords = [
+      "chronicled", "chronicle", "cronache", "cronaca", "chronique",
+      "nostalgique", "segensreich", "recopilación", "recopilacion",
+      "registro", "registros", "хроник",
+    ];
+    if (chronicledWords.some((w) => text.includes(w))) {
+      return { category: "chronicled", wish2: false };
+    }
+
     throw new Error(`Unrecognized wish type: ${rawType}`);
   }
 
@@ -283,6 +292,7 @@
   // ── Paimon.moe item parsing ───────────────────────────────────────
   function parseItemsTexts(texts) {
     const items = {};
+    const itemIds = {};
     const errors = [];
     for (const [key, exportName, itemType] of [
       ["characters", "characters", "Character"],
@@ -292,16 +302,18 @@
       if (!text) continue;
       try {
         const data = parseJsExport(text, exportName);
-        for (const entry of Object.values(data)) {
+        for (const [entryKey, entry] of Object.entries(data)) {
           if (entry && typeof entry === "object" && entry.name && entry.rarity) {
-            items[cleanItemName(entry.name)] = [itemType, parseInt(entry.rarity, 10)];
+            const name = cleanItemName(entry.name);
+            items[name] = [itemType, parseInt(entry.rarity, 10)];
+            itemIds[name] = String(entry.id || entryKey);
           }
         }
       } catch (e) {
         errors.push(`${exportName}: ${e.message}`);
       }
     }
-    return { items, errors };
+    return { items, itemIds, errors };
   }
 
   // ── Paimon.moe banner parsing ─────────────────────────────────────
@@ -479,7 +491,7 @@
       standard: [banner("Wanderlust Invocation")],
       characters: [banner("Character Event Wish", "Character Event Wish 2")],
       weapons: [banner("Epitome Invocation")],
-      chronicled: [],
+      chronicled: [banner("Chronicled Wish")],
     };
   }
 
