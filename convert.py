@@ -1110,16 +1110,22 @@ def enrich_category(rows, banners, category):
 
         if current_banner is None or current_banner["_end"] < row["dt"]:
             found = None
+            new_banner = False
             for index in range(current_index + 1, len(banners)):
                 candidate = banners[index]
                 if candidate["_start"] <= row["dt"] < candidate["_end"]:
                     found = (index, candidate)
+                    new_banner = True
                     break
             if found is None:
-                raise ValueError(i18n.t("no_banner", time=row["time"], item=row["item_name"]))
+                if current_banner is None:
+                    raise ValueError(i18n.t("no_banner", time=row["time"], item=row["item_name"]))
+                found = (current_index, current_banner)
+                new_banner = False
             current_index, current_banner = found
-            roll = 0
-            group = 0
+            if new_banner:
+                roll = 0
+                group = 0
 
         roll += 1
         if last_time != row["time"]:

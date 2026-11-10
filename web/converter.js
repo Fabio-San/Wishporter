@@ -88,20 +88,28 @@
 
       if (!currentBanner || currentBanner._end < row.dt) {
         let found = null;
+        let newBanner = false;
         const startIndex = currentBanner ? banners.indexOf(currentBanner) + 1 : 0;
         for (let i = startIndex; i < banners.length; i++) {
           const candidate = banners[i];
           if (candidate._start <= row.dt && row.dt < candidate._end) {
             found = candidate;
+            newBanner = true;
             break;
           }
         }
         if (!found) {
-          throw new Error(`No banner schedule found for ${row.time} (${row.itemName})`);
+          if (!currentBanner) {
+            throw new Error(`No banner schedule found for ${row.time} (${row.itemName})`);
+          }
+          found = currentBanner;
+          newBanner = false;
         }
         currentBanner = found;
-        roll = 0;
-        group = 0;
+        if (newBanner) {
+          roll = 0;
+          group = 0;
+        }
       }
 
       roll += 1;

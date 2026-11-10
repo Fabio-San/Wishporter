@@ -4,6 +4,16 @@ All notable changes to this project are documented here.
 The format follows [Keep a Changelog](https://keepachangelog.com/) and the
 project adheres to [Semantic Versioning](https://semver.org/).
 
+## [1.0.8] - 2026-11-10
+
+### Fixed
+
+- **Banner gaps:** pulls that land in the maintenance gap between two
+  banners (e.g. a 3-star weapon pulled during the rollover window) no longer
+  abort the conversion. Wishporter now falls back to the previous banner,
+  matching Paimon.moe's own behaviour. This fixes mismatched pity on
+  exports whose UID is missing (default server fallback).
+
 ## [1.0.7] - 2026-11-10
 
 ### Fixed
