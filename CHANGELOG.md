@@ -4,6 +4,22 @@ All notable changes to this project are documented here.
 The format follows [Keep a Changelog](https://keepachangelog.com/) and the
 project adheres to [Semantic Versioning](https://semver.org/).
 
+## [1.0.7] - 2026-11-10
+
+### Fixed
+
+- **Web layout:** fixed a CSS regression where the backup file input rule
+  overwrote `.theme-toggle`, breaking the centered layout. Page is centered
+  again.
+- **Auto-update:** version gate + no-cache meta + `cache: no-store` fetches so
+  returning visitors get the latest version automatically.
+
+### Added
+
+- **Merge mode:** Wishporter can now merge an existing Paimon.moe backup JSON
+  (`--paimon-backup` in CLI, optional file input in web) so that `server`,
+  `ar`, `wl`, collectables and todos are preserved instead of reset.
+
 ## [1.0.6] - 2026-11-10
 
 ### Added
