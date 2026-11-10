@@ -1077,7 +1077,7 @@ def parse_source_file(file_path):
     # The HoYo export is newest-first. Within the same second, the lower
     # "No." is the newer pull, so the chronological order is time ascending,
     # No. descending.
-    all_records.sort(key=lambda row: (row["dt"], -row["no"]))
+    all_records.sort(key=lambda row: (row["dt"], row["no"]))
     return all_records
 
 
@@ -1097,15 +1097,16 @@ def enrich_category(rows, banners, category):
     for row in rows:
         rarity = row["rarity"]
 
-        pity_4 += 1
         pity_5 += 1
         if rarity == 5:
             row["pity"] = pity_5
             pity_5 = 0
         elif rarity == 4:
+            pity_4 += 1
             row["pity"] = pity_4
             pity_4 = 0
         else:
+            pity_4 += 1
             row["pity"] = 1
 
         if current_banner is None or current_banner["_end"] < row["dt"]:

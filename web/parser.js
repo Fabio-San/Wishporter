@@ -708,7 +708,7 @@
     // is the newer pull, so chronological order is time ascending, No. descending.
     records.sort((a, b) => {
       if (a.dt.getTime() !== b.dt.getTime()) return a.dt.getTime() - b.dt.getTime();
-      return b.no - a.no;
+      return a.no - b.no;
     });
 
     return records;

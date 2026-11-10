@@ -4,6 +4,18 @@ All notable changes to this project are documented here.
 The format follows [Keep a Changelog](https://keepachangelog.com/) and the
 project adheres to [Semantic Versioning](https://semver.org/).
 
+## [1.0.9] - 2026-11-10
+
+### Fixed
+
+- **Sort order:** changed from `(time asc, No. desc)` to `(time asc, No. asc)`.
+  The HoYo export lists pulls newest-first by time, but within the same
+  timestamp pulls are ordered oldest-first (ascending No.). The previous
+  descending sort reversed same-timestamp groups, causing incorrect pity
+  (e.g. Lion's Roar showing 23 instead of 7).
+- **4-star pity:** 5-star pulls no longer increment the 4-star pity counter,
+  matching the expected behaviour. Only 3-star and 4-star pulls increment it.
+
 ## [1.0.8] - 2026-11-10
 
 ### Fixed
