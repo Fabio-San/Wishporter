@@ -1,5 +1,5 @@
 // Service worker for offline support
-const CACHE_NAME = "wishporter-v7";
+const CACHE_NAME = "wishporter-v8";
 const BASE = self.location.pathname.replace(/\/[^/]*$/, "/");
 
 self.addEventListener("message", (event) => {
@@ -28,7 +28,7 @@ self.addEventListener("fetch", (event) => {
   if (isCode) {
     // Network-first for code files: always try network, fall back to cache
     event.respondWith(
-      fetch(event.request).then((response) => {
+      fetch(event.request, { cache: "no-store" }).then((response) => {
         if (response.ok && response.type === "basic") {
           const clone = response.clone();
           caches.open(CACHE_NAME).then((cache) => cache.put(event.request, clone));
@@ -41,7 +41,7 @@ self.addEventListener("fetch", (event) => {
     event.respondWith(
       caches.match(event.request).then((cached) => {
         if (cached) return cached;
-        return fetch(event.request).then((response) => {
+        return fetch(event.request, { cache: "no-store" }).then((response) => {
           if (response.ok && response.type === "basic") {
             const clone = response.clone();
             caches.open(CACHE_NAME).then((cache) => cache.put(event.request, clone));
