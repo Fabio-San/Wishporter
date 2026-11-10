@@ -21,7 +21,9 @@ Wishporter turns the official Genshin Impact wish history export (`.xlsx` or
 `.csv`) into an Excel file that [Paimon.moe](https://paimon.moe) can import,
 with banner names, item types, rarity and pity information filled in.
 
-- Windows and Linux launchers, same behavior on both
+- **Web version (recommended):** https://fabio-san.github.io/Wishporter/ — no
+  installation, works offline after first visit
+- Windows and Linux launchers, same behavior on both (for automation/advanced use)
 - Checks Python and `openpyxl`, asks permission before installing anything
 - Installs only in a local `.venv`, never system-wide
 - UI in English, Italian, French, German, Spanish, Portuguese and Russian
@@ -46,23 +48,29 @@ Paimon.moe-ready Excel file.
 > works as long as the file has the five columns `No.`, `UID`, `Wish type`,
 > `Wish award`, `Wish time`.
 
-## Web version (no installation)
+## Recommended: Web version (no installation)
 
-A browser-based version is available at:
+The easiest way to use Wishporter is in your browser — no Python, no downloads,
+no installation:
+
 **https://fabio-san.github.io/Wishporter/**
 
-No Python, no downloads, no installation. Just open the link, drop your file,
-and download the result. Works offline after the first visit.
+1. Open the link.
+2. Drop your HoYo Excel / CSV file.
+3. Click **Convert**, then download the `.xlsx` and/or the `.json` backup.
 
-The web version has the same features as the desktop tool. For automation
-and advanced use, the Python CLI (`convert.py`) and launchers (`run.bat`,
-`run.sh`) are still available.
+Works offline after the first visit (PWA). Supports all 7 UI languages,
+auto-detected from the browser.
+
+The desktop tool (`convert.py`, `run.bat`, `run.sh`) is still available for
+automation, scripting and advanced use (see below). Both produce identical
+output.
 
 > **Note for contributors:** to enable GitHub Pages on your fork, go to
 > Settings → Pages → Source: "GitHub Actions". The `deploy-pages` job in
 > `.github/workflows/ci.yml` handles the rest.
 
-## Quick start
+## Desktop tool (CLI) — for automation and advanced use
 
 ### Windows
 
