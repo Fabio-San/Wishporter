@@ -1101,6 +1101,7 @@ def enrich_category(rows, banners, category):
         if rarity == 5:
             row["pity"] = pity_5
             pity_5 = 0
+            pity_4 = 0
         elif rarity == 4:
             pity_4 += 1
             row["pity"] = pity_4

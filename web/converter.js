@@ -81,7 +81,7 @@
     for (const row of rows) {
       const rarity = row.rarity;
       pity5 += 1;
-      if (rarity === 5) { row.pity = pity5; pity5 = 0; }
+      if (rarity === 5) { row.pity = pity5; pity5 = 0; pity4 = 0; }
       else if (rarity === 4) { pity4 += 1; row.pity = pity4; pity4 = 0; }
       else { pity4 += 1; row.pity = 1; }
 
