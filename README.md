@@ -201,13 +201,15 @@ The JSON restores **everything**, including the 50/50 win/loss statistic and the
 **Chronicled Wish** banner. It replaces the data currently saved in Paimon.moe,
 so export a backup first.
 
-> **Preserve your other data:** pass your existing Paimon.moe backup to
+> **Preserve your other data:** export a backup from Paimon.moe first:
+> **Settings → Export & Import Data → Download Data** → save the file as
+> `paimon-moe-local-data.json` (or any `.json` name). Then pass it to
 > Wishporter so the JSON keeps your server, achievements, wish list and
 > collectables:
 > `python convert.py source.xlsx --paimon-backup paimon-moe-local-data.json`
+> If a file with `wish-counter-*` keys is found in the working directory,
+> the CLI merges it automatically (no flag needed).
 > In the web version, use the optional "Existing Paimon.moe backup" field.
-> If a `paimon-moe-local-data.json` is found in the working directory, the
-> CLI merges it automatically.
 
 ## Languages
 

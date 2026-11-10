@@ -116,6 +116,6 @@
   "web_json_note": "JSON restores 50/50 stats and Chronicled Wish. Import via Paimon.moe: Settings -> Export & Import Data -> Import Data (replaces existing data; back up first).",
   "web_json_failed": "JSON export is not available. Convert a file first.",
   "web_backup_file": "Existing Paimon.moe backup (.json, optional)",
-  "web_backup_hint": "Without this file, server/ar/wl/collectables reset to defaults on import.",
+  "web_backup_hint": "Get it from Paimon.moe: Settings -> Export & Import Data -> Download Data. Without it, server/ar/wl/collectables reset on import.",
   "web_backup_invalid": "Invalid Paimon.moe backup JSON."
 }
