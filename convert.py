@@ -229,7 +229,9 @@ def normalize_wish_type(raw_type):
         "chronicled", "chronicle", "cronache", "cronaca", "chronique",
         "nostalgique", "nostalgie", "segensreich", "kollektion",
         "recopilación", "recopilacion", "recopilatorio",
-        "registro", "registros", "хроник",
+        "registro", "registros", "хроник", "collected", "collection",
+        "colección", "coleccion", "raccolta", "collectées", "collectees",
+        "sammlung",
     )
     if any(word in text for word in chronicled_words):
         return "chronicled", False

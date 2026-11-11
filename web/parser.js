@@ -113,7 +113,9 @@
       "chronicled", "chronicle", "cronache", "cronaca", "chronique",
       "nostalgique", "nostalgie", "segensreich", "kollektion",
       "recopilación", "recopilacion", "recopilatorio",
-      "registro", "registros", "хроник",
+      "registro", "registros", "хроник", "collected", "collection",
+      "colección", "coleccion", "raccolta", "collectées", "collectees",
+      "sammlung",
     ];
     if (chronicledWords.some((w) => text.includes(w))) {
       return { category: "chronicled", wish2: false };
