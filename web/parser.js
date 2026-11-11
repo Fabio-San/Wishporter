@@ -111,7 +111,8 @@
 
     const chronicledWords = [
       "chronicled", "chronicle", "cronache", "cronaca", "chronique",
-      "nostalgique", "segensreich", "recopilación", "recopilacion",
+      "nostalgique", "nostalgie", "segensreich", "kollektion",
+      "recopilación", "recopilacion", "recopilatorio",
       "registro", "registros", "хроник",
     ];
     if (chronicledWords.some((w) => text.includes(w))) {

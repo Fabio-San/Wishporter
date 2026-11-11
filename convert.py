@@ -227,7 +227,8 @@ def normalize_wish_type(raw_type):
         return "beginners", False
     chronicled_words = (
         "chronicled", "chronicle", "cronache", "cronaca", "chronique",
-        "nostalgique", "segensreich", "recopilación", "recopilacion",
+        "nostalgique", "nostalgie", "segensreich", "kollektion",
+        "recopilación", "recopilacion", "recopilatorio",
         "registro", "registros", "хроник",
     )
     if any(word in text for word in chronicled_words):

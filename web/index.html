@@ -8,13 +8,13 @@
   <meta http-equiv="Pragma" content="no-cache">
   <meta http-equiv="Expires" content="0">
   <link rel="icon" href="assets/icon.svg" type="image/svg+xml">
-  <link rel="stylesheet" href="style.css?v=1.0.9">
+  <link rel="stylesheet" href="style.css?v=1.0.11">
   <link rel="manifest" href="manifest.json">
   <script>
     // Always load the latest version: clear stale caches and reload once when
     // a new release is detected, instead of serving an outdated page.
     (function () {
-      var VERSION = "1.0.9";
+      var VERSION = "1.0.11";
       try {
         var prev = localStorage.getItem("wp_version");
         localStorage.setItem("wp_version", VERSION);
@@ -36,7 +36,7 @@
     // Service worker: auto-update and reload when a new version activates.
     if ("serviceWorker" in navigator) {
       window.addEventListener("load", function () {
-        navigator.serviceWorker.register("sw.js?v=1.0.9").then(function (reg) {
+        navigator.serviceWorker.register("sw.js?v=1.0.11").then(function (reg) {
           try { reg.update(); } catch (e) {}
           reg.addEventListener("updatefound", function () {
             var nw = reg.installing;
@@ -63,7 +63,7 @@
     <div class="header-inner">
       <img src="assets/icon.svg" alt="Wishporter" class="logo" width="32" height="32">
       <div>
-        <h1>Wishporter <span class="version" id="appVersion">v1.0.9</span></h1>
+        <h1>Wishporter <span class="version" id="appVersion">v1.0.11</span></h1>
         <p class="tagline">Genshin Impact wish history → Paimon.moe converter</p>
       </div>
       <button id="themeToggle" class="theme-toggle" aria-label="Toggle dark mode" title="Toggle theme">
@@ -144,6 +144,7 @@
     <section id="result" class="card result hidden">
       <h2 data-i18n="web_result">Result</h2>
       <ul id="resultSummary" class="summary"></ul>
+      <p id="chronicledWarning" class="warning-box hidden" data-i18n="web_chronicled_warning">Chronicled Wish pulls detected. To keep Chronicled history in Paimon.moe, import the *_paimonmoe.json backup (Settings → Export & Import Data → Import Data).</p>
       <button id="downloadBtn" class="btn-secondary" data-i18n="web_download">Download *_paimonmoe.xlsx</button>
       <button id="downloadJsonBtn" class="btn-secondary" data-i18n="web_download_json">Download *_paimonmoe.json (Paimon.moe backup)</button>
       <p class="hint" data-i18n="web_paimon_note">Paimon.moe reads columns A (Type), B (Name), C (Time) and I (Part).</p>
@@ -182,12 +183,12 @@
   <script src="https://cdn.jsdelivr.net/npm/exceljs@4.4.0/dist/exceljs.min.js"></script>
 
   <!-- App -->
-  <script src="i18n.js?v=1.0.9"></script>
-  <script src="cache.js?v=1.0.9"></script>
-  <script src="parser.js?v=1.0.9"></script>
-  <script src="converter.js?v=1.0.9"></script>
-  <script src="backup.js?v=1.0.9"></script>
-  <script src="excel.js?v=1.0.9"></script>
-  <script src="app.js?v=1.0.9"></script>
+  <script src="i18n.js?v=1.0.11"></script>
+  <script src="cache.js?v=1.0.11"></script>
+  <script src="parser.js?v=1.0.11"></script>
+  <script src="converter.js?v=1.0.11"></script>
+  <script src="backup.js?v=1.0.11"></script>
+  <script src="excel.js?v=1.0.11"></script>
+  <script src="app.js?v=1.0.11"></script>
 </body>
 </html>

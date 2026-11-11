@@ -437,3 +437,19 @@ footer a:hover { text-decoration: underline; }
   font-size: 0.75rem;
   opacity: 0.7;
 }
+/* Warnings */
+.warning-box {
+  background: #fffbeb;
+  border: 1px solid #fcd34d;
+  border-radius: var(--radius);
+  padding: 0.75rem 1rem;
+  font-size: 0.875rem;
+  color: #92400e;
+  margin: 0 0 0.75rem;
+}
+
+[data-theme="dark"] .warning-box {
+  background: #422006;
+  border-color: #92400e;
+  color: #fde68a;
+}

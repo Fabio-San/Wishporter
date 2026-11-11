@@ -33,6 +33,7 @@
   const progressText = $("#progressText");
   const result = $("#result");
   const resultSummary = $("#resultSummary");
+  const chronicledWarning = $("#chronicledWarning");
   const downloadBtn = $("#downloadBtn");
   const downloadJsonBtn = $("#downloadJsonBtn");
   const errorBox = $("#errorBox");
@@ -304,12 +305,21 @@
 
       // Summary
       resultSummary.innerHTML = "";
-      for (const cat of ["characters", "weapons", "standard", "beginners"]) {
+      const summaryCats = ["characters", "weapons", "standard", "beginners", "chronicled"];
+      let total = 0;
+      for (const cat of summaryCats) {
         const sheetName = window.converter.CATEGORY_TO_SHEET[cat];
         const count = (byCategory[cat] || []).length;
+        total += count;
         const li = document.createElement("li");
         li.textContent = t("web_summary_line", { sheet: sheetName, count });
         resultSummary.appendChild(li);
+      }
+      const totalLi = document.createElement("li");
+      totalLi.textContent = t("web_summary_total", { count: total });
+      resultSummary.appendChild(totalLi);
+      if (chronicledWarning) {
+        chronicledWarning.classList.toggle("hidden", !((byCategory.chronicled || []).length));
       }
 
       setProgress(100, t("web_progress_done"));
