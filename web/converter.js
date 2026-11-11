@@ -80,12 +80,13 @@
 
     for (const row of rows) {
       const rarity = row.rarity;
-      // Mirrors Paimon.moe's own Excel importer: every pull increments both
-      // counters; a 4-star resets the 4-star counter; a 5-star resets only
-      // the 5-star counter (it still counts towards 4-star pity).
+      // Game8's documented rule: a 5-star resets both pity counters, a 4-star
+      // resets only the 4-star counter, and every pull counts as one pull
+      // towards 4-star pity. Paimon.moe recomputes pity when importing the
+      // Excel file (it ignores this column); the JSON backup keeps these values.
       pity4 += 1;
       pity5 += 1;
-      if (rarity === 5) { row.pity = pity5; pity5 = 0; }
+      if (rarity === 5) { row.pity = pity5; pity5 = 0; pity4 = 0; }
       else if (rarity === 4) { row.pity = pity4; pity4 = 0; }
       else { row.pity = 1; }
 

@@ -13,10 +13,11 @@ project adheres to [Semantic Versioning](https://semver.org/).
   and sorts pulls chronologically while preserving the export's order inside
   same-timestamp ten-pulls. This fixes wrong pity values in both conventions
   (e.g. Lion's Roar showing 23 instead of 9, Fischl showing 5 instead of 6).
-- **4-star pity:** aligned with Paimon.moe's own Excel importer
-  (`processWishes`): every pull counts towards 4-star pity, a 4-star resets
-  it, and a 5-star resets only the 5-star counter. The 5-star pull itself
-  still counts as one pull towards 4-star pity.
+- **4-star pity:** a 5-star pull now resets both the 5-star and the 4-star
+  pity counters, following Game8's documented rule. A 4-star pull resets only
+  the 4-star counter, and every pull (including 5-stars) counts as one pull
+  towards 4-star pity. Note: Paimon.moe recomputes pity when importing the
+  Excel file and ignores this column; the JSON backup keeps these values.
 
 ## [1.0.8] - 2026-11-10
 

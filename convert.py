@@ -1106,15 +1106,17 @@ def enrich_category(rows, banners, category):
     for row in rows:
         rarity = row["rarity"]
 
-        # Mirrors Paimon.moe's own Excel importer (processWishes in
-        # _excelImport.svelte): every pull increments both counters; a 4-star
-        # resets the 4-star counter; a 5-star resets only the 5-star counter
-        # (it still counts as one pull towards the 4-star pity).
+        # Game8's documented rule: a 5-star resets both pity counters, a
+        # 4-star resets only the 4-star counter, and every pull counts as one
+        # pull towards 4-star pity. Note: Paimon.moe recomputes pity when
+        # importing the Excel file (it ignores this column), but the JSON
+        # backup keeps the values written here.
         pity_4 += 1
         pity_5 += 1
         if rarity == 5:
             row["pity"] = pity_5
             pity_5 = 0
+            pity_4 = 0
         elif rarity == 4:
             row["pity"] = pity_4
             pity_4 = 0
