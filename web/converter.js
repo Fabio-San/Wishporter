@@ -80,6 +80,9 @@
 
     for (const row of rows) {
       const rarity = row.rarity;
+      // Mirrors Paimon.moe's own Excel importer: every pull increments both
+      // counters; a 4-star resets the 4-star counter; a 5-star resets only
+      // the 5-star counter (it still counts towards 4-star pity).
       pity4 += 1;
       pity5 += 1;
       if (rarity === 5) { row.pity = pity5; pity5 = 0; }

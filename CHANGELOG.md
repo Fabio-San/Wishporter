@@ -8,13 +8,15 @@ project adheres to [Semantic Versioning](https://semver.org/).
 
 ### Fixed
 
-- **Sort order:** changed from `(time asc, No. desc)` to `(time asc, No. asc)`.
-  The HoYo export lists pulls newest-first by time, but within the same
-  timestamp pulls are ordered oldest-first (ascending No.). The previous
-  descending sort reversed same-timestamp groups, causing incorrect pity
-  (e.g. Lion's Roar showing 23 instead of 7).
-- **4-star pity:** 5-star pulls no longer increment the 4-star pity counter,
-  matching the expected behaviour. Only 3-star and 4-star pulls increment it.
+- **Sort order:** the converter now detects the `No.` convention used by each
+  HoYo export (No. 1 = newest for some accounts, No. 1 = oldest for others)
+  and sorts pulls chronologically while preserving the export's order inside
+  same-timestamp ten-pulls. This fixes wrong pity values in both conventions
+  (e.g. Lion's Roar showing 23 instead of 9, Fischl showing 5 instead of 6).
+- **4-star pity:** aligned with Paimon.moe's own Excel importer
+  (`processWishes`): every pull counts towards 4-star pity, a 4-star resets
+  it, and a 5-star resets only the 5-star counter. The 5-star pull itself
+  still counts as one pull towards 4-star pity.
 
 ## [1.0.8] - 2026-11-10
 

@@ -1074,15 +1074,11 @@ def parse_source_file(file_path):
         if unknown_types:
             print("[!] Unknown wish types: %s." % ", ".join(sorted(unknown_types)))
 
-    # The HoYo export is newest-first. Within the same second, the lower
-    # "No." is the newer pull, so the chronological order is time ascending,
-    # No. descending.
-    # The HoYo export is sorted by time, but the "No." column convention varies:
-    # some exports have No. 1 = newest (descending), others No. 1 = oldest
-    # (ascending). Detect the convention and sort chronologically (oldest first).
+    # The HoYo export is sorted by time, but the "No." column convention
+    # varies between accounts: some exports have No. 1 = newest, others have
+    # No. 1 = oldest. Detect the convention and sort chronologically (oldest
+    # first), keeping the export's order inside same-timestamp groups.
     if all_records:
-        first_no = all_records[0]["no"] if "no" in all_records[0] else None
-        # Find the record with the highest No. and its time
         max_no_rec = max(all_records, key=lambda r: r["no"])
         min_no_rec = min(all_records, key=lambda r: r["no"])
         if min_no_rec["dt"] > max_no_rec["dt"]:
@@ -1110,6 +1106,10 @@ def enrich_category(rows, banners, category):
     for row in rows:
         rarity = row["rarity"]
 
+        # Mirrors Paimon.moe's own Excel importer (processWishes in
+        # _excelImport.svelte): every pull increments both counters; a 4-star
+        # resets the 4-star counter; a 5-star resets only the 5-star counter
+        # (it still counts as one pull towards the 4-star pity).
         pity_4 += 1
         pity_5 += 1
         if rarity == 5:
