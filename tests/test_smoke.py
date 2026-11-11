@@ -93,7 +93,7 @@ class ConversionTests(unittest.TestCase):
                     [(row[1], row[3], row[4], row[5], row[6], row[7], row[8]) for row in characters],
                     [
                         ("Test Five Star", 5, 1, 1, 1, "Test Character Banner", None),
-                        ("Test Four Star", 4, 1, 2, 1, "Test Character Banner", None),
+                        ("Test Four Star", 4, 2, 2, 1, "Test Character Banner", None),
                         ("Test Four Star", 4, 1, 3, 2, "Test Character Banner 2", "Wish 2"),
                     ],
                 )
