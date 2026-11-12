@@ -213,7 +213,7 @@ def normalize_wish_type(raw_type):
     if any(word in text for word in character_words):
         is_wish_2 = bool(re.search(r"-\s*2\b|wish\s*2\b", text))
         return "characters", is_wish_2
-    weapon_words = ("weapon", "arma", "arme", "waffe", "оружие")
+    weapon_words = ("weapon", "arma", "arme", "waffe", "оружи")
     if any(word in text for word in weapon_words):
         return "weapons", False
     standard_words = ("standard", "estándar", "estandar", "padrão", "padrao", "стандарт")
@@ -221,7 +221,7 @@ def normalize_wish_type(raw_type):
         return "standard", False
     beginner_words = (
         "novice", "beginner", "principiante", "débutant", "debutant",
-        "anfänger", "anfanger", "iniciante", "новичок",
+        "anfänger", "anfanger", "iniciante", "новичк", "novat",
     )
     if any(word in text for word in beginner_words):
         return "beginners", False

@@ -4,6 +4,33 @@ All notable changes to this project are documented here.
 The format follows [Keep a Changelog](https://keepachangelog.com/) and the
 project adheres to [Semantic Versioning](https://semver.org/).
 
+## [1.0.13] - 2026-11-12
+
+### Fixed
+
+- **Localized wish-type detection** (web + CLI): Chronicled Wish now recognized in
+  all supported languages, including Spanish "Gachapón recopilatorio", French
+  "Vœux nostalgie", German "Kollektionsgebet", Italian "Desiderio delle
+  cronache", and the "Collected Gachas"/"Collection" variants.
+- **Weapon / Novice detection** for Russian (genitive "оружия") and Portuguese
+  ("Novatos") exports.
+- Expanded Chronicled keyword list with collection-related terms.
+
+## [1.0.10] - 2026-11-12
+
+### Fixed
+
+- **Web result summary** now lists all five categories (including Chronicled Wish)
+  and shows a total, so the displayed pull count matches the source file.
+- **Chronicled Wish detection** in HoYo exports now covers the official
+  localized names in all supported languages (e.g. Spanish "Gachapón
+  recopilatorio", French "Vœux nostalgie", German "Kollektionsgebet",
+  Russian genitive forms).
+- **Weapon / Novice detection** for Russian and Portuguese exports.
+- Added a visible warning on the web result when Chronicled Wish pulls are
+  present, reminding users to import the JSON backup (Paimon.moe's Excel
+  importer ignores Chronicled Wish).
+
 ## [1.0.9] - 2026-11-10
 
 ### Fixed

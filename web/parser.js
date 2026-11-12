@@ -91,7 +91,7 @@
       return { category: "characters", wish2: isWish2 };
     }
 
-    const weaponWords = ["weapon", "arma", "arme", "waffe", "оружие"];
+    const weaponWords = ["weapon", "arma", "arme", "waffe", "оружи"];
     if (weaponWords.some((w) => text.includes(w))) {
       return { category: "weapons", wish2: false };
     }
@@ -103,7 +103,7 @@
 
     const beginnerWords = [
       "novice", "beginner", "principiante", "débutant", "debutant",
-      "anfänger", "anfanger", "iniciante", "новичок",
+      "anfänger", "anfanger", "iniciante", "новичк", "novat",
     ];
     if (beginnerWords.some((w) => text.includes(w))) {
       return { category: "beginners", wish2: false };

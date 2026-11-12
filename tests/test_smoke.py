@@ -27,6 +27,7 @@ ROWS = [
     (4, "700000001", "Standard Wish", "Test Weapon", "2024-01-07 12:02:00"),
     (6, "700000001", "Novice Wishes", "Test Four Star", "2024-01-08 12:00:00"),
     (11, "700000001", "Character Event Wish-2", "Test Four Star", "2024-01-09 12:00:00"),
+    (12, "700000001", "Chronicled Wish", "Test Five Star", "2024-01-10 12:00:00"),
 ]
 SHEETS = ["Character Event", "Weapon Event", "Standard", "Beginners' Wish", "Chronicled Wish"]
 
@@ -113,12 +114,16 @@ class ConversionTests(unittest.TestCase):
                 self.assertEqual(len(beginners), 1)
                 self.assertEqual(beginners[0][7], "Beginners' Wish")
 
+                chronicled = list(workbook["Chronicled Wish"].iter_rows(min_row=2, values_only=True))
+                self.assertEqual(len(chronicled), 1)
+                self.assertEqual(chronicled[0][7], "Test Chronicled Banner")
+
                 information = workbook["Information"]
                 self.assertEqual(information["A1"].value, "Paimon.moe Wish History Export")
                 self.assertEqual(information["B2"].value, 3)
 
                 banner_list = list(workbook["Banner List"].iter_rows(min_row=2, values_only=True))
-                self.assertEqual(len(banner_list), 4)
+                self.assertEqual(len(banner_list), 5)
             finally:
                 workbook.close()
 
@@ -177,9 +182,10 @@ class ConversionTests(unittest.TestCase):
 
         banners, banner_list = convert.parse_banners_texts(texts, "Europe")
         self.assertIsNotNone(banners)
-        self.assertEqual(len(banner_list), 4)
+        self.assertEqual(len(banner_list), 5)
         character_banner = banners["characters"][0]
         self.assertEqual(character_banner["_dual_name"], "Test Character Banner 2")
+        self.assertEqual(len(banners["chronicled"]), 1)
 
 
 if __name__ == "__main__":

@@ -8,13 +8,13 @@
   <meta http-equiv="Pragma" content="no-cache">
   <meta http-equiv="Expires" content="0">
   <link rel="icon" href="assets/icon.svg" type="image/svg+xml">
-  <link rel="stylesheet" href="style.css?v=1.0.12">
+  <link rel="stylesheet" href="style.css?v=1.0.13">
   <link rel="manifest" href="manifest.json">
   <script>
     // Always load the latest version: clear stale caches and reload once when
     // a new release is detected, instead of serving an outdated page.
     (function () {
-      var VERSION = "1.0.12";
+      var VERSION = "1.0.13";
       try {
         var prev = localStorage.getItem("wp_version");
         localStorage.setItem("wp_version", VERSION);
@@ -36,7 +36,7 @@
     // Service worker: auto-update and reload when a new version activates.
     if ("serviceWorker" in navigator) {
       window.addEventListener("load", function () {
-        navigator.serviceWorker.register("sw.js?v=1.0.12").then(function (reg) {
+        navigator.serviceWorker.register("sw.js?v=1.0.13").then(function (reg) {
           try { reg.update(); } catch (e) {}
           reg.addEventListener("updatefound", function () {
             var nw = reg.installing;
@@ -63,7 +63,7 @@
     <div class="header-inner">
       <img src="assets/icon.svg" alt="Wishporter" class="logo" width="32" height="32">
       <div>
-        <h1>Wishporter <span class="version" id="appVersion">v1.0.12</span></h1>
+        <h1>Wishporter <span class="version" id="appVersion">v1.0.13</span></h1>
         <p class="tagline">Genshin Impact wish history → Paimon.moe converter</p>
       </div>
       <button id="themeToggle" class="theme-toggle" aria-label="Toggle dark mode" title="Toggle theme">
@@ -183,12 +183,12 @@
   <script src="https://cdn.jsdelivr.net/npm/exceljs@4.4.0/dist/exceljs.min.js"></script>
 
   <!-- App -->
-  <script src="i18n.js?v=1.0.12"></script>
-  <script src="cache.js?v=1.0.12"></script>
-  <script src="parser.js?v=1.0.12"></script>
-  <script src="converter.js?v=1.0.12"></script>
-  <script src="backup.js?v=1.0.12"></script>
-  <script src="excel.js?v=1.0.12"></script>
-  <script src="app.js?v=1.0.12"></script>
+  <script src="i18n.js?v=1.0.13"></script>
+  <script src="cache.js?v=1.0.13"></script>
+  <script src="parser.js?v=1.0.13"></script>
+  <script src="converter.js?v=1.0.13"></script>
+  <script src="backup.js?v=1.0.13"></script>
+  <script src="excel.js?v=1.0.13"></script>
+  <script src="app.js?v=1.0.13"></script>
 </body>
 </html>

@@ -204,7 +204,7 @@
 
     if (!banners) {
       banners = window.parser.makeGenericBanners();
-      bannerListRows = ["beginners", "standard", "characters", "weapons"].map((category) => [
+      bannerListRows = ["beginners", "standard", "characters", "weapons", "chronicled"].map((category) => [
         banners[category][0].name,
         window.parser.formatDatetime(banners[category][0]._start),
         window.parser.formatDatetime(banners[category][0]._end),
